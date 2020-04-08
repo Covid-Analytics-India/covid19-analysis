@@ -147,7 +147,7 @@ drive.mount('/content/gdrive')
 # Adding new data to old
 # file_loc = 'gdrive/My Drive/Covid19/day_by_day_data/'
 file_loc = ''
-prev_data = pd.read_csv( './data/complete_statewise.csv' )
+prev_data = pd.read_csv( 'complete_statewise.csv' )
 
 prev_data = prev_data.rename( columns={'Cured': 'Cured/Discharged'} )
 prev_data = prev_data.rename( columns={'Cured/Discharged': 'Cured/Discharged/Migrated'} )
@@ -172,7 +172,7 @@ complete_statewise = prev_data.drop_duplicates( subset=['Date', 'Name of State /
 # use this dataframe to do analysis
 # complete_statewise
 # save data
-complete_statewise.to_csv( './data/complete_statewise.csv', index=False )
+complete_statewise.to_csv( 'complete_statewise.csv', index=False )
 # changing the column names
 complete_statewise = complete_statewise.rename( columns={
     "Total Confirmed cases (Including 51 foreign Nationals) ": "Total Confirmed cases (Including 51 foreign Nationals)"} )
