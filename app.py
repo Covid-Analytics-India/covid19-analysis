@@ -51,7 +51,11 @@ from bs4 import BeautifulSoup
 import json
 from flask import Flask
 import requests
+from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 warnings.simplefilter( 'ignore' )
 
 def get(url):
