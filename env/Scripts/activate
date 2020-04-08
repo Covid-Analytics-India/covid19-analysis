@@ -46,7 +46,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV='C:\Users\KIIT\OneDrive\Documents\GitHub\Flask-App\env'
+VIRTUAL_ENV='C:\Users\KIIT\OneDrive\Documents\GitHub\covid19-analysis\env'
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

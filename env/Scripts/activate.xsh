@@ -28,7 +28,7 @@ def _deactivate(args):
 _deactivate(["nondestructive"])
 aliases["deactivate"] = _deactivate
 
-$VIRTUAL_ENV = r"C:\Users\KIIT\OneDrive\Documents\GitHub\Flask-App\env"
+$VIRTUAL_ENV = r"C:\Users\KIIT\OneDrive\Documents\GitHub\covid19-analysis\env"
 
 $_OLD_VIRTUAL_PATH = $PATH
 $PATH = $PATH[:]
