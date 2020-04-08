@@ -47,7 +47,7 @@ import pandas as pd
 # from datetime import datetime
 # import os
 # import glob
-from bs4 import BeautifulSoup
+from BeautifulSoup4 import BeautifulSoup
 import json
 from flask import Flask
 import requests
