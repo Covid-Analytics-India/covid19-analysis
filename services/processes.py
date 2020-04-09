@@ -7,30 +7,20 @@ import os
 import glob
 from bs4 import BeautifulSoup
 import json
-from flask import Flask, requests
-app = Flask(__name__)
+from datetime import datetime
+import requests
+
 warnings.simplefilter( 'ignore' )
-
-def get(url):
-    try:
-        response = requests.get( url )
-        print( f"Request returned {response.status_code} : '{response.reason}'" )
-        return response.json()
-    except requests.HTTPError:
-        print( response.status_code, response.reason )
-        raise
-
+apiResponse = {}
+from services.fetch import get
 
 # Fetching and Parsing the data
-raw_data = get( 'https://api.covid19india.org/raw_data.json' )
+apiResponse = get( 'https://api.covid19india.org/raw_data.json' )
+raw_data = apiResponse.json()
+# print(raw_data)
 raw_data = raw_data['raw_data']
 
 """## Fetching State wise Data"""
-
-from datetime import datetime
-import os
-import glob
-from bs4 import BeautifulSoup
 
 """### Web Scraping"""
 
@@ -65,7 +55,6 @@ for tr in body:
 # print(head_rows)
 
 df_bs = pd.DataFrame( body_rows[:len( body_rows ) - 2], columns=head_rows[0] )
-
 df_bs.drop( 'S. No.', axis=1, inplace=True )
 # ---------------------
 
@@ -96,15 +85,9 @@ df_bs['Latitude'] = df_bs['Name of State / UT'].map( lat )
 df_bs['Longitude'] = df_bs['Name of State / UT'].map( long )
 
 statewise_data_today = df_bs
-'''
-# Import gdrive
-from google.colab import drive
-drive.mount('/content/gdrive')
-'''
-# Adding new data to old
-# file_loc = 'gdrive/My Drive/Covid19/day_by_day_data/'
+
 file_loc = ''
-prev_data = pd.read_csv( 'complete_statewise.csv' )
+prev_data = pd.read_csv( './data/complete_statewise.csv' )
 
 prev_data = prev_data.rename( columns={'Cured': 'Cured/Discharged'} )
 prev_data = prev_data.rename( columns={'Cured/Discharged': 'Cured/Discharged/Migrated'} )
@@ -129,7 +112,7 @@ complete_statewise = prev_data.drop_duplicates( subset=['Date', 'Name of State /
 # use this dataframe to do analysis
 # complete_statewise
 # save data
-complete_statewise.to_csv( 'complete_statewise.csv', index=False )
+complete_statewise.to_csv( './data/complete_statewise.csv', index=False )
 # changing the column names
 complete_statewise = complete_statewise.rename( columns={
     "Total Confirmed cases (Including 51 foreign Nationals) ": "Total Confirmed cases (Including 51 foreign Nationals)"} )
@@ -187,7 +170,7 @@ data['Status change date'] = pd.to_datetime( data['Status change date'], dayfirs
 # data['Age'].describe()
 
 # replacing all the missing values with unknown
-data.replace( to_replace="",value="unknown", inplace=True )
+data.replace( to_replace="", value="unknown", inplace=True )
 # creating new columns depicting the current status of patient
 data['recovered'] = 0
 data['active'] = 0
@@ -212,13 +195,13 @@ for status in data.index:
 ## Total Confirmed Cases
 """
 
-grouped = data.groupby('Diagnosed date' )['Diagnosed date', 'confirmed'].sum().reset_index()
+grouped = data.groupby( 'Diagnosed date' )['Diagnosed date', 'confirmed'].sum().reset_index()
 s = 0
 grouped['tot_confirmed'] = grouped['confirmed']
 for row in grouped.index:
     grouped['tot_confirmed'][row] += s
     s = grouped['tot_confirmed'][row]
-
+'''
 @app.route('/')
 def index():
     return 'Hello World!'
@@ -261,7 +244,7 @@ def day_wise_confirmed():
     #print(type(graph_data))
     return (json.dumps(graph_data))
 
-'''
+
 fig2 = px.line( grouped, x="Diagnosed date", y="tot_confirmed",
                 title="Day Wise Confirmed Cases in India(Logarithmic Scale)", log_y=True, width=900, height=650 )
 
@@ -332,5 +315,6 @@ layout = html.Div(children=[header, row1, row2, row3, row4, row5, row6], style={
 
 app.layout = layout
 '''
-if __name__ == "__main__":
-    app.run( debug=True )
+# print(grouped)
+# if __name__ == "__main__":
+#    app.run( debug=True )
