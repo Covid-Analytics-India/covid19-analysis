@@ -72,7 +72,7 @@ def index():
 
 @app.route('/fetch', methods=['GET'])
 def fetch_from_api():
-    print("App.py", apiResponse)
+    #print("App.py", apiResponse)
     return json.dumps({"status":apiResponse.status_code, "reason":apiResponse.reason})
 
 @app.route( '/api/day_wise_confirmed', methods=['GET'])
