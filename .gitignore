@@ -1,2 +1,5 @@
 /react-covid19-analysis
 /node-modules
+/.vscode
+/__pycache__
+/env

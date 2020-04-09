@@ -53,10 +53,16 @@ from flask import Flask
 import requests
 from flask_cors import CORS, cross_origin
 
-app = Flask(__name__)
-cors = CORS(app)
+app = Flask( __name__ )
+cors = CORS( app )
 app.config['CORS_HEADERS'] = 'Content-Type'
 warnings.simplefilter( 'ignore' )
+
+
+def myconverter(o):  # datetime to JSON converter
+    if isinstance( o, datetime ):
+        return o.timestamp()  # can change to string o.__str
+
 
 def get(url):
     try:
@@ -75,6 +81,7 @@ raw_data = raw_data['raw_data']
 """## Fetching State wise Data"""
 
 from datetime import datetime
+
 # import os
 # import glob
 # from bs4 import BeautifulSoup
@@ -151,7 +158,7 @@ drive.mount('/content/gdrive')
 # Adding new data to old
 # file_loc = 'gdrive/My Drive/Covid19/day_by_day_data/'
 file_loc = ''
-prev_data = pd.read_csv( 'complete_statewise.csv' )
+prev_data = pd.read_csv( './data/complete_statewise.csv' )
 
 prev_data = prev_data.rename( columns={'Cured': 'Cured/Discharged'} )
 prev_data = prev_data.rename( columns={'Cured/Discharged': 'Cured/Discharged/Migrated'} )
@@ -176,7 +183,7 @@ complete_statewise = prev_data.drop_duplicates( subset=['Date', 'Name of State /
 # use this dataframe to do analysis
 # complete_statewise
 # save data
-complete_statewise.to_csv( 'complete_statewise.csv', index=False )
+complete_statewise.to_csv( './data/complete_statewise.csv', index=False )
 # changing the column names
 complete_statewise = complete_statewise.rename( columns={
     "Total Confirmed cases (Including 51 foreign Nationals) ": "Total Confirmed cases (Including 51 foreign Nationals)"} )
@@ -234,7 +241,7 @@ data['Status change date'] = pd.to_datetime( data['Status change date'], dayfirs
 # data['Age'].describe()
 
 # replacing all the missing values with unknown
-data.replace( to_replace="",value="unknown", inplace=True )
+data.replace( to_replace="", value="unknown", inplace=True )
 # creating new columns depicting the current status of patient
 data['recovered'] = 0
 data['active'] = 0
@@ -259,54 +266,54 @@ for status in data.index:
 ## Total Confirmed Cases
 """
 
-grouped = data.groupby('Diagnosed date' )['Diagnosed date', 'confirmed'].sum().reset_index()
+grouped = data.groupby( 'Diagnosed date' )['Diagnosed date', 'confirmed'].sum().reset_index()
 s = 0
 grouped['tot_confirmed'] = grouped['confirmed']
 for row in grouped.index:
     grouped['tot_confirmed'][row] += s
     s = grouped['tot_confirmed'][row]
 
-@app.route('/')
+
+@app.route( '/' )
 def index():
     return 'Hello World!'
 
-@app.route('/day_wise_confirmed')
+
+@app.route( '/day_wise_confirmed' )
 def day_wise_confirmed():
-    diagnosed_date = grouped['Diagnosed date']
-    #print(type(diagnosed_date))
-    total_confirmed = grouped['tot_confirmed']
-    diagnosed_date = diagnosed_date.to_json()
-    #diagnosed = json.dumps(diagnosed_date)
-    total_confirmed = total_confirmed.to_json()
-    #print(type(diagnosed))
-    diagnosed = json.loads(diagnosed_date)
-    total = json.loads(total_confirmed)
-    #print(diagnosed)
-    #print(total_confirmed)
+    # diagnosed_date = grouped['Diagnosed date']
+    # print(type(diagnosed_date))
+    diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
+    # print(ser)
+    # print(ser[1])
+    total_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()
+    # diagnosed_date = diagnosed_date.to_json()
+    # diagnosed = json.dumps(diagnosed_date)
+    # total_confirmed = total_confirmed.to_json()
+    # print(type(diagnosed))
+    # diagnosed = json.loads(diagnosed_date)
+    # total = json.loads(total_confirmed)
+    #print( diagnosed_date )
+    #print( total_confirmed )
 
     graph_data = {}
-    xplots = {}
-    yplots = {}
     graph_data['type'] = 'line-graph'
     graph_data['graphTitle'] = "Day Wise Confirmed Cases in India"
     graph_data['xLabel'] = "Diagnosed date"
     graph_data['yLabel'] = "total confirmed"
-    xplots = diagnosed
-    yplots = total
-    graph_data['xpoints'] = xplots
-    graph_data['ypoints'] = yplots
-    now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    graph_data['timestamp'] = timestamp
+    graph_data['xPoints'] = diagnosed_date
+    graph_data['yPoints'] = total_confirmed
+    graph_data['timestamp'] = datetime.timestamp(datetime.now())
     graph_data['message'] = "graph sent"
     graph_data['status'] = "200"
-    print(datetime.now())
-    #print("Graph data")
-    #graph_data = graph_data.to_json()
-    #graph_data = json.loads(graph_data)
-    #print(graph_data)
-    #print(type(graph_data))
-    return (json.dumps(graph_data))
+    #print( datetime.now() )
+    # print("Graph data")
+    # graph_data = graph_data.to_json()
+    # graph_data = json.loads(graph_data)
+    # print(graph_data)
+    # print(type(graph_data))
+    return (json.dumps( graph_data, default=myconverter ))
+
 
 '''
 fig2 = px.line( grouped, x="Diagnosed date", y="tot_confirmed",
