@@ -7,6 +7,7 @@ import requests
 from flask_cors import CORS, cross_origin
 from services.processes import apiResponse
 from services.country_wise import grouped
+from services.travel_history import notes_cleaned
 
 app = Flask( __name__ )
 cors = CORS( app )
@@ -68,6 +69,12 @@ def day_wise_encountered():
     }
     return json.dumps(graph_data, default=myconverter)
 
+
+@app.route('/api/travel_history_analysis')
+def travel_history_analysis():
+    print(notes_cleaned)
+    #return 'Travel history endpoint'
+    return json.dumps(notes_cleaned)
 
 if __name__ == "__main__":
     app.run(debug=True)

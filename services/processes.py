@@ -10,10 +10,19 @@ import json
 from datetime import datetime
 import requests
 
+# deploy
+from services.fetch import get  # deploy
+file_loc = ''  # deploy
+
+
+'''
+# production
+file_loc = '.' # production
+from fetch import get  # production
+'''
 warnings.simplefilter( 'ignore' )
 apiResponse = {}
-from services.fetch import get # deploy
-#from fetch import get  # production
+
 # Fetching and Parsing the data
 apiResponse = get( 'https://api.covid19india.org/raw_data.json' )
 raw_data = apiResponse.json()
@@ -84,16 +93,15 @@ df_bs['Latitude'] = df_bs['Name of State / UT'].map( lat )
 df_bs['Longitude'] = df_bs['Name of State / UT'].map( long )
 
 statewise_data_today = df_bs
-file_loc = '' # deploy
-#file_loc = '.' # production
-
-prev_data = pd.read_csv(file_loc + './data/complete_statewise.csv' )
+prev_data = pd.read_csv( file_loc + './data/complete_statewise.csv' )
 
 prev_data = prev_data.rename( columns={'Cured': 'Cured/Discharged'} )
 prev_data = prev_data.rename( columns={'Cured/Discharged': 'Cured/Discharged/Migrated'} )
 
 prev_data['Date'] = pd.to_datetime( prev_data['Date'] )
-prev_data = pd.concat( [statewise_data_today, prev_data], ignore_index=True ).sort_values( ['Date'],ascending=True ).reset_index(drop=True )
+prev_data = pd.concat( [statewise_data_today, prev_data], ignore_index=True ).sort_values( ['Date'],
+                                                                                           ascending=True ).reset_index(
+    drop=True )
 prev_data = prev_data.sort_values( ['Date', 'Name of State / UT'] ).reset_index( drop=True )
 
 cols = ['Total Confirmed cases (Indian National)', 'Total Confirmed cases ( Foreign National )',
@@ -182,5 +190,3 @@ for status in data.index:
 
 ## Total Confirmed Cases
 """
-
-
