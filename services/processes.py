@@ -12,12 +12,11 @@ import requests
 
 warnings.simplefilter( 'ignore' )
 apiResponse = {}
-from services.fetch import get
-
+from services.fetch import get # deploy
+#from fetch import get  # production
 # Fetching and Parsing the data
 apiResponse = get( 'https://api.covid19india.org/raw_data.json' )
 raw_data = apiResponse.json()
-# print(raw_data)
 raw_data = raw_data['raw_data']
 
 """## Fetching State wise Data"""
@@ -85,17 +84,16 @@ df_bs['Latitude'] = df_bs['Name of State / UT'].map( lat )
 df_bs['Longitude'] = df_bs['Name of State / UT'].map( long )
 
 statewise_data_today = df_bs
+file_loc = '' # deploy
+#file_loc = '.' # production
 
-file_loc = ''
-prev_data = pd.read_csv( './data/complete_statewise.csv' )
+prev_data = pd.read_csv(file_loc + './data/complete_statewise.csv' )
 
 prev_data = prev_data.rename( columns={'Cured': 'Cured/Discharged'} )
 prev_data = prev_data.rename( columns={'Cured/Discharged': 'Cured/Discharged/Migrated'} )
 
 prev_data['Date'] = pd.to_datetime( prev_data['Date'] )
-prev_data = pd.concat( [statewise_data_today, prev_data], ignore_index=True ).sort_values( ['Date'],
-                                                                                           ascending=True ).reset_index(
-    drop=True )
+prev_data = pd.concat( [statewise_data_today, prev_data], ignore_index=True ).sort_values( ['Date'],ascending=True ).reset_index(drop=True )
 prev_data = prev_data.sort_values( ['Date', 'Name of State / UT'] ).reset_index( drop=True )
 
 cols = ['Total Confirmed cases (Indian National)', 'Total Confirmed cases ( Foreign National )',
@@ -112,7 +110,7 @@ complete_statewise = prev_data.drop_duplicates( subset=['Date', 'Name of State /
 # use this dataframe to do analysis
 # complete_statewise
 # save data
-complete_statewise.to_csv( './data/complete_statewise.csv', index=False )
+complete_statewise.to_csv( file_loc + './data/complete_statewise.csv', index=False )
 # changing the column names
 complete_statewise = complete_statewise.rename( columns={
     "Total Confirmed cases (Including 51 foreign Nationals) ": "Total Confirmed cases (Including 51 foreign Nationals)"} )
@@ -149,18 +147,8 @@ data = data.rename( columns={"patientnumber": "ID",
 # converting the string values to datetime object
 data['Diagnosed date'] = pd.to_datetime( data['Diagnosed date'], dayfirst=True )
 data['Status change date'] = pd.to_datetime( data['Status change date'], dayfirst=True )
-# print(data.head())
-# print(data['Diagnosed date'].max())
-# print(data['Status change date'].max())
 
 """# Understanding the Data"""
-
-# data['Diagnosed date'].sample(5)
-
-# print( "External Data" )
-# print( f"First recorded Case: {data['Diagnosed date'].min()}" )
-# print( f"Last recorded Case: {data['Diagnosed date'].max()}" )
-# print( f"Total Days recorded: {data['Diagnosed date'].max() - data['Diagnosed date'].min()}" )
 
 """# Data Analysis (COVID - 19)
 
@@ -195,126 +183,4 @@ for status in data.index:
 ## Total Confirmed Cases
 """
 
-grouped = data.groupby( 'Diagnosed date' )['Diagnosed date', 'confirmed'].sum().reset_index()
-s = 0
-grouped['tot_confirmed'] = grouped['confirmed']
-for row in grouped.index:
-    grouped['tot_confirmed'][row] += s
-    s = grouped['tot_confirmed'][row]
-'''
-@app.route('/')
-def index():
-    return 'Hello World!'
 
-@app.route('/day_wise_confirmed')
-def day_wise_confirmed():
-    diagnosed_date = grouped['Diagnosed date']
-    #print(type(diagnosed_date))
-    total_confirmed = grouped['tot_confirmed']
-    diagnosed_date = diagnosed_date.to_json()
-    #diagnosed = json.dumps(diagnosed_date)
-    total_confirmed = total_confirmed.to_json()
-    #print(type(diagnosed))
-    diagnosed = json.loads(diagnosed_date)
-    total = json.loads(total_confirmed)
-    #print(diagnosed)
-    #print(total_confirmed)
-
-    graph_data = {}
-    xplots = {}
-    yplots = {}
-    graph_data['type'] = 'line-graph'
-    graph_data['graphTitle'] = "Day Wise Confirmed Cases in India"
-    graph_data['xLabel'] = "Diagnosed date"
-    graph_data['yLabel'] = "total confirmed"
-    xplots = diagnosed
-    yplots = total
-    graph_data['xpoints'] = xplots
-    graph_data['ypoints'] = yplots
-    now = datetime.now()
-    timestamp = datetime.timestamp(now)
-    graph_data['timestamp'] = timestamp
-    graph_data['message'] = "graph sent"
-    graph_data['status'] = "200"
-    print(datetime.now())
-    #print("Graph data")
-    #graph_data = graph_data.to_json()
-    #graph_data = json.loads(graph_data)
-    #print(graph_data)
-    #print(type(graph_data))
-    return (json.dumps(graph_data))
-
-
-fig2 = px.line( grouped, x="Diagnosed date", y="tot_confirmed",
-                title="Day Wise Confirmed Cases in India(Logarithmic Scale)", log_y=True, width=900, height=650 )
-
-# fig.show()
-graph1 = dcc.Graph(
-    id='graph1',
-    figure=fig1,
-)
-graph2 = dcc.Graph(
-    id='graph2',
-    figure=fig2,
-)
-
-fig3 = px.line( grouped, x="Diagnosed date", y="confirmed", title="Day Wise Encountered Cases in India", width=900,
-                height=650 )
-
-# fig.show()
-
-fig4 = px.line( grouped, x="Diagnosed date", y="confirmed",
-                title="Day Wise Encountred Cases in India(Logarithmic Scale)", log_y=True, width=900, height=650 )
-
-# fig.show()
-graph3 = dcc.Graph(
-    id='graph3',
-    figure=fig3,
-)
-graph4 = dcc.Graph(
-    id='graph4',
-    figure=fig4,
-)
-complete_statewise['Total Confirmed cases (Including 66 foreign Nationals) '] = complete_statewise['Total Confirmed cases (Including 66 foreign Nationals) '].astype(float)
-#cases state wise
-state_grouped = complete_statewise.groupby(['Name of State / UT'])['Total Confirmed cases (Including 66 foreign Nationals) '].sum().reset_index()
-
-fig5 = px.bar(state_grouped.sort_values('Total Confirmed cases (Including 66 foreign Nationals) ', ascending=False)[:33][::-1],
-             x='Total Confirmed cases (Including 66 foreign Nationals) ', y='Name of State / UT',
-             title='Confirmed Cases in Various States in India', text='Total Confirmed cases (Including 66 foreign Nationals) ', height=800,width = 1050, orientation='h')
-#fig.show()
-graph5 = dcc.Graph(
-    id='graph5',
-    figure=fig5,
-)
-# gender pie chart
-# Remove all the unknown Genders
-df_gender_cleaned = data[data['Gender']!="unknown"]
-# Pie Chart
-fig6 = px.pie(df_gender_cleaned,values='confirmed', names='Gender')
-graph6 = dcc.Graph(
-    id='graph6',
-    figure=fig6,
-)
-
-# Observation, Front-end part
-ratio = df_gender_cleaned['Gender'].value_counts()[0] / df_gender_cleaned['Gender'].value_counts()[1]
-print("\nAlthough more than 50% of the genders of people affected with covid19 is unknown but from the ones that are known we can see that almost\n{} times the number of Males are getting affected by COVID-19 in India. ".format(0.5*round(ratio/0.5)))
-
-
-# HTML PART
-header = html.H2(children="Testing Covid Analysis" )
-row1 = html.Div(children=[graph1])
-row2 = html.Div(children=[graph2])
-row3 = html.Div(children=[graph3])
-row4 = html.Div(children=[graph4])
-row5 = html.Div(children=[graph5])
-row6 = html.Div(children=[graph6])
-
-layout = html.Div(children=[header, row1, row2, row3, row4, row5, row6], style={"text-align": "center"} )
-
-app.layout = layout
-'''
-# print(grouped)
-# if __name__ == "__main__":
-#    app.run( debug=True )
