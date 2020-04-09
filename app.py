@@ -12,7 +12,7 @@ from services.travel_history import notes_cleaned
 app = Flask( __name__ )
 cors = CORS( app )
 app.config['CORS_HEADERS'] = 'Content-Type'
-warnings.simplefilter( 'ignore' )
+warnings.simplefilter('ignore')
 
 
 # def __init__():
@@ -28,10 +28,12 @@ def index():
     return 'Hello World!'
 
 
-@app.route('/api/fetch', methods=['GET'])
+@app.route('/api/fetch_api_status', methods=['GET'])
 def fetch_from_api():
-    return json.dumps({"status": apiResponse.status_code, "reason": apiResponse.reason})
-
+    if(apiResponse.status_code == 200):
+        return 'true'
+    else:
+        return 'false'
 
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
 def day_wise_confirmed():
@@ -55,7 +57,7 @@ def day_wise_confirmed():
 @app.route('/api/day_wise_encountered', methods=['GET'])
 def day_wise_encountered():
     diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
-    confirmed = pd.Series( grouped['confirmed'] ).tolist()
+    confirmed = pd.Series( grouped['confirmed']).tolist()
     graph_data = {
         'type': 'line-graph',
         'graphTitle': "Day Wise Encountered Cases in India",
@@ -73,8 +75,8 @@ def day_wise_encountered():
 @app.route('/api/travel_history_analysis')
 def travel_history_analysis():
     print(notes_cleaned)
-    #return 'Travel history endpoint'
-    return json.dumps(notes_cleaned)
+    return 'Travel history endpoint'
+    #return json.dumps(notes_cleaned)
 
 if __name__ == "__main__":
     app.run(debug=True)
