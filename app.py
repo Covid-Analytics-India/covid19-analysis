@@ -20,7 +20,10 @@ warnings.simplefilter('ignore')
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
-        return o.timestamp()  # can change to string o.__str
+        date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
+        time = date_time.strftime("%d %B %Y")
+        return time
+        #return o.timestamp()
 
 
 @app.route( '/' )
@@ -38,26 +41,18 @@ def fetch_from_api():
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
 def day_wise_confirmed():
 
-    diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
-    total_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()
-    graph_data = {
-        'type': 'line-graph',
-        'graphTitle': "Day Wise Confirmed Cases in India",
-        'xLabel': "Diagnosed date",
-        'yLabel': "total confirmed",
-        'xPoints': diagnosed_date,
-        'yPoints': total_confirmed,
-        'timestamp': datetime.timestamp(datetime.utcnow()),
-        'message': "graph sent",
-        'status': "200"
-    }
-    return json.dumps( graph_data, default=myconverter )
+    #diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
+    #print(diagnosed_date)
+    #total_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()
 
+    graph_data = grouped[['Diagnosed date', 'tot_confirmed']].to_dict('records')
+    return json.dumps(graph_data, default=myconverter)
 
 @app.route('/api/day_wise_encountered', methods=['GET'])
 def day_wise_encountered():
     diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
     confirmed = pd.Series( grouped['confirmed']).tolist()
+    '''
     graph_data = {
         'type': 'line-graph',
         'graphTitle': "Day Wise Encountered Cases in India",
@@ -69,14 +64,31 @@ def day_wise_encountered():
         'message': "graph sent",
         'status': "200"
     }
+    '''
+    graph_data = grouped[['Diagnosed date', 'confirmed']].to_dict( 'records' )
     return json.dumps(graph_data, default=myconverter)
 
 
 @app.route('/api/travel_history_analysis')
 def travel_history_analysis():
     print(notes_cleaned)
+    labels = notes_cleaned['Available Information']
+    values = notes_cleaned['confirmed']
+    #print(labels)
+    print()
     return 'Travel history endpoint'
     #return json.dumps(notes_cleaned)
+
+@app.route('/api/getAll')
+def get_all_graphs():
+    graphs_data = {
+        'countryWise' : {
+            'dayWiseConfirmed': grouped[['Diagnosed date', 'tot_confirmed']].to_dict('records'),
+            'dayWiseEncountered': grouped[['Diagnosed date', 'confirmed']].to_dict('records'),
+        }
+    }
+
+    return json.dumps( graphs_data, default=myconverter )
 
 if __name__ == "__main__":
     app.run(debug=True)
