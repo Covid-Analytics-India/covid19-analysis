@@ -79,5 +79,16 @@ def travel_history_analysis():
     return 'Travel history endpoint'
     #return json.dumps(notes_cleaned)
 
+@app.route('/api/getAll')
+def get_all_graphs():
+    graphs_data = {
+        'countryWise' : {
+            'dayWiseConfirmed': grouped[['Diagnosed date', 'tot_confirmed']].to_dict('records'),
+            'dayWiseEncountered': grouped[['Diagnosed date', 'confirmed']].to_dict('records'),
+        }
+    }
+
+    return json.dumps( graphs_data, default=myconverter )
+
 if __name__ == "__main__":
     app.run(debug=True)
