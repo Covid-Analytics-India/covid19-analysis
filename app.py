@@ -1,19 +1,20 @@
-from datetime import datetime
+from datetime import date, datetime, timedelta
 import warnings
 import pandas as pd
 import json
 from flask import Flask
+from dateutil.parser import parse
 import requests
 from flask_cors import CORS, cross_origin
-from services.processes import apiResponse
+from services.processes import update_database
 from services.country_wise import grouped
 from services.travel_history import notes_cleaned
-
+import threading
 app = Flask( __name__ )
 cors = CORS( app )
 app.config['CORS_HEADERS'] = 'Content-Type'
 warnings.simplefilter('ignore')
-
+# diagnosed date string format mein aa rha hai
 
 # def __init__():
 #    raw_data = [1, 2, 3]
@@ -30,19 +31,19 @@ def myconverter(o):  # datetime to JSON converter
 def index():
     return 'Hello World!'
 
-
+'''
 @app.route('/api/fetch_api_status', methods=['GET'])
 def fetch_from_api():
-    if(apiResponse.status_code == 200):
+    if response.status_code == 200:
         return 'true'
     else:
         return 'false'
-
+'''
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
 def day_wise_confirmed():
 
-    diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
-    #print(diagnosed_date)
+    diagnosed = pd.Series( grouped['Diagnosed date'] ).tolist()
+    diagnosed_date = [datetime.strptime(x, "%Y-%m-%d %H:%M:%S") for x in diagnosed]
     total_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()
 
     graph_data = {
@@ -50,12 +51,12 @@ def day_wise_confirmed():
         'y': total_confirmed,
         'type': 'line',
     }
-    #graph_data = grouped[['Diagnosed date', 'tot_confirmed']].to_dict('records')
     return json.dumps(graph_data, default=myconverter)
 
 @app.route('/api/day_wise_encountered', methods=['GET'])
 def day_wise_encountered():
-    diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
+    diagnosed = pd.Series( grouped['Diagnosed date'] ).tolist()
+    diagnosed_date = [datetime.strptime( x, "%Y-%m-%d %H:%M:%S" ) for x in diagnosed]
     confirmed = pd.Series( grouped['confirmed']).tolist()
 
     graph_data = {
@@ -64,17 +65,15 @@ def day_wise_encountered():
         'type': 'line',
     }
 
-    # graph_data = grouped[['Diagnosed date', 'confirmed']].to_dict( 'records' )
     return json.dumps(graph_data, default=myconverter)
 
 
-@app.route('/api/travel_history_analysis')
+@app.route('/api/travel_histoSry_analysis')
 def travel_history_analysis():
     print(notes_cleaned)
     labels = notes_cleaned['Available Information']
     values = notes_cleaned['confirmed']
     #print(labels)
-    print()
     return 'Travel history endpoint'
     #return json.dumps(notes_cleaned)
 
