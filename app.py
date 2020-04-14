@@ -20,10 +20,10 @@ warnings.simplefilter('ignore')
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
-        date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
-        time = date_time.strftime("%d %B %Y")
-        return time
-        #return o.timestamp()
+        #date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
+        #time = date_time.strftime("%d %B %Y")
+        #return time
+        return o.timestamp()
 
 
 @app.route( '/' )
@@ -41,31 +41,30 @@ def fetch_from_api():
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
 def day_wise_confirmed():
 
-    #diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
+    diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
     #print(diagnosed_date)
-    #total_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()
+    total_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()
 
-    graph_data = grouped[['Diagnosed date', 'tot_confirmed']].to_dict('records')
+    graph_data = {
+        'x': diagnosed_date,
+        'y': total_confirmed,
+        'type': 'line',
+    }
+    #graph_data = grouped[['Diagnosed date', 'tot_confirmed']].to_dict('records')
     return json.dumps(graph_data, default=myconverter)
 
 @app.route('/api/day_wise_encountered', methods=['GET'])
 def day_wise_encountered():
     diagnosed_date = pd.Series( grouped['Diagnosed date'] ).tolist()
     confirmed = pd.Series( grouped['confirmed']).tolist()
-    '''
+
     graph_data = {
-        'type': 'line-graph',
-        'graphTitle': "Day Wise Encountered Cases in India",
-        'xLabel': "Diagnosed date",
-        'yLabel': "confirmed",
-        'xPoints': diagnosed_date,
-        'yPoints': confirmed,
-        'timestamp': datetime.timestamp(datetime.utcnow()),
-        'message': "graph sent",
-        'status': "200"
+        'x': diagnosed_date,
+        'y': confirmed,
+        'type': 'line',
     }
-    '''
-    graph_data = grouped[['Diagnosed date', 'confirmed']].to_dict( 'records' )
+
+    # graph_data = grouped[['Diagnosed date', 'confirmed']].to_dict( 'records' )
     return json.dumps(graph_data, default=myconverter)
 
 
