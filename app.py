@@ -31,14 +31,6 @@ def myconverter(o):  # datetime to JSON converter
 def index():
     return 'Hello World!'
 
-'''
-@app.route('/api/fetch_api_status', methods=['GET'])
-def fetch_from_api():
-    if response.status_code == 200:
-        return 'true'
-    else:
-        return 'false'
-'''
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
 def day_wise_confirmed():
 
