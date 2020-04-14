@@ -1,5 +1,9 @@
 # from processes import data  # production
-from services.processes import data  # deploy
+#from services.processes import data  # deploy
+# file_loc = '.' # production
+file_loc = '' # deploy
+import pandas as pd
+data = pd.read_csv(file_loc + './data/data.csv')
 notes_cleaned = data[data["notes"].str.contains("Travelled", na=False)]
 v = notes_cleaned[['notes']]
 notes_cleaned = notes_cleaned[v.replace(v.stack().value_counts()).gt(5).all(1)]
