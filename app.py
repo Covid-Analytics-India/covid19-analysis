@@ -79,8 +79,7 @@ def travel_history_analysis():
         'labels' : pd.Series( pie_data['travel'] ).tolist(),
         'type' : 'pie'
     }]
-    print(pie_data)
-
+    
     return json.dumps(graph_data)
 
 @app.route('/api/getAll')
