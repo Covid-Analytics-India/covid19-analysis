@@ -6,10 +6,11 @@ from flask import Flask
 from dateutil.parser import parse
 import requests
 from flask_cors import CORS, cross_origin
-from services.processes import update_database
+import services.processes
 from services.country_wise import grouped
-from services.travel_history import notes_cleaned
+from services.travel_history import pie_data
 import threading
+import time
 app = Flask( __name__ )
 cors = CORS( app )
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -18,6 +19,16 @@ warnings.simplefilter('ignore')
 
 # def __init__():
 #    raw_data = [1, 2, 3]
+def update():
+    while 1:
+        services.processes.update_database()
+        services.processes.update_database2()
+        time.sleep(600)
+        #time.sleep(10) #testing
+
+t = threading.Thread(target=update)
+t.start()
+
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
@@ -51,6 +62,7 @@ def day_wise_confirmed():
         'y': total_confirmed,
         'type': 'line',
     }
+    #update_database()
     return json.dumps(graph_data, default=myconverter)
 
 @app.route('/api/day_wise_encountered', methods=['GET'])
@@ -68,14 +80,16 @@ def day_wise_encountered():
     return json.dumps(graph_data, default=myconverter)
 
 
-@app.route('/api/travel_histoSry_analysis')
+@app.route('/api/travel_history_analysis')
 def travel_history_analysis():
-    print(notes_cleaned)
-    labels = notes_cleaned['Available Information']
-    values = notes_cleaned['confirmed']
-    #print(labels)
-    return 'Travel history endpoint'
-    #return json.dumps(notes_cleaned)
+    graph_data = [{
+        'values' : pd.Series( pie_data['per'] ).tolist(),
+        'labels' : pd.Series( pie_data['travel'] ).tolist(),
+        'type' : 'pie'
+    }]
+    print(pie_data)
+
+    return json.dumps(graph_data)
 
 @app.route('/api/getAll')
 def get_all_graphs():
@@ -90,3 +104,4 @@ def get_all_graphs():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
