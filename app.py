@@ -9,6 +9,7 @@ from flask_cors import CORS, cross_origin
 import services.processes
 from services.country_wise import grouped
 from services.travel_history import pie_data
+from services.statewise.statewise_confirmed import statewise_confirmed_grouped
 import threading
 import time
 app = Flask( __name__ )
@@ -23,7 +24,7 @@ def update():
     while 1:
         services.processes.update_database()
         services.processes.update_database2()
-        time.sleep(600)
+        time.sleep(3600) # 10 mins
         #time.sleep(10) #testing
 
 t = threading.Thread(target=update)
@@ -79,7 +80,18 @@ def travel_history_analysis():
         'labels' : pd.Series( pie_data['travel'] ).tolist(),
         'type' : 'pie'
     }]
-    
+
+    return json.dumps(graph_data)
+
+@app.route('/api/state_wise_confirmed')
+def state_wise_confirmed():
+    # horizontal bar-graph
+    graph_data = [{
+        'x': pd.Series(statewise_confirmed_grouped['Confirmed'] ).tolist(),
+        'y': pd.Series(statewise_confirmed_grouped['State']).tolist(),
+        'orientation': 'h',
+        'type': 'bar'
+    }]
     return json.dumps(graph_data)
 
 @app.route('/api/getAll')
