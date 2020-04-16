@@ -13,15 +13,13 @@ notes_cleaned["notes"] = notes_cleaned["notes"].str.replace('Travelled from Lond
 notes_cleaned["notes"] = notes_cleaned["notes"].str.replace('Travelled to Delhi', 'Travelled from Delhi')
 notes_cleaned["notes"] = notes_cleaned["notes"].str.replace('Travelled to Delhi', 'Travelled from Delhi')
 notes_cleaned["notes"] = notes_cleaned["notes"].str.replace('Travelled from Delhi and Contact history with TN-P5 and TN-P6', 'Travelled from Delhi')
-#dont know why but everything is working except the below two lines
 notes_cleaned["notes"] = notes_cleaned["notes"].str.replace('Travelled from Iran, Resident of Ladakh( S.N Medical College ) - Evacuee', 'Travelled from Iran')
 notes_cleaned["notes"] = notes_cleaned["notes"].str.replace('Travelled from Iran, Resident of Ladakh( AIIMS ) - Evacuee', 'Travelled from Iran')
 
 notes_cleaned = notes_cleaned.rename(columns={'notes':'Available Information'})
-
-
 # Rename column name to Available Information
 notes_cleaned = notes_cleaned.rename(columns={'notes':'Available Information'})
+
 
 pie_data = {}
 pie_data['travel'] = notes_cleaned['Available Information'].unique()
@@ -66,7 +64,5 @@ pie_data['per'][pie_data['travel'] == ('Travelled from Saudi Arabia') ] = (Trave
 pie_data['per'][pie_data['travel'] == ('Travelled from Iran, Resident of Ladakh( S.N Medical College ) - Evacuee') ] = (Travelled_from_IranResidentofLadakhSNMedicalCollegeEvacuee/total)*100
 pie_data['per'][pie_data['travel'] == ('Travelled from Iran, Resident of Ladakh( AIIMS ) - Evacuee') ] = (Travelled_from_IranResidentofLadakhAIIMSEvacuee/total)*100
 
-
-# Pie Chart to show the travel related spread of Coronavirus
-#fig = go.Figure(data=[go.Pie(labels=notes_cleaned['Available Information'], values = notes_cleaned['confirmed'],pull=0.05)])
-#fig.show()
+pie_data_percentage = pd.Series( pie_data['per'] ).tolist(),
+pie_data_travel = pd.Series( pie_data['travel'] ).tolist(),
