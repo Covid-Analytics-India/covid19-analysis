@@ -7,6 +7,7 @@ file_loc = ''  # deploy
 file_loc = '.' # production
 from fetch import get  # production
 '''
+from datetime import datetime
 import json
 from pandas.io.json import json_normalize
 import pandas as pd
@@ -18,4 +19,7 @@ for row in grouped.index:
     grouped['tot_confirmed'][row] += s
     s = grouped['tot_confirmed'][row]
 
-#print(grouped)
+diagnosed = pd.Series(grouped['Diagnosed date']).tolist()
+diagnosed_date = [datetime.strptime( x, "%Y-%m-%d %H:%M:%S" ) for x in diagnosed]
+day_wise_encountered = pd.Series( grouped['confirmed'] ).tolist()
+day_wise_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()

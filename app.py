@@ -6,10 +6,12 @@ from flask import Flask
 from dateutil.parser import parse
 import requests
 from flask_cors import CORS, cross_origin
+# local module exporting
 import services.processes
-from services.country_wise import grouped
-from services.travel_history import pie_data
-from services.statewise.statewise_confirmed import statewise_confirmed_grouped
+import services.country_wise
+import services.travel_history
+import services.statewise.statewise_confirmed
+
 import threading
 import time
 import atexit
@@ -25,19 +27,18 @@ warnings.simplefilter( 'ignore' )
 
 
 def update():
+    # updating database
+    services.processes.update_database()
+    services.processes.update_database2()
     # updating imports
     importlib.reload( services.statewise.statewise_confirmed )
     importlib.reload(services.country_wise)
     importlib.reload(services.travel_history)
 
-    # updating database
-    services.processes.update_database()
-    services.processes.update_database2()
-
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=update, trigger='interval', seconds=3600) # updating in every 1 hour
 scheduler.start()
-atexit.register( lambda: scheduler.shutdown() )
+atexit.register(lambda: scheduler.shutdown())
 
 
 # t = threading.Thread(target=update)
@@ -59,39 +60,30 @@ def index():
 
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
 def day_wise_confirmed():
-    diagnosed = pd.Series( grouped['Diagnosed date'] ).tolist()
-    diagnosed_date = [datetime.strptime( x, "%Y-%m-%d %H:%M:%S" ) for x in diagnosed]
-    total_confirmed = pd.Series( grouped['tot_confirmed'] ).tolist()
-
     graph_data = {
-        'x': diagnosed_date,
-        'y': total_confirmed,
+        'x': services.country_wise.diagnosed_date,
+        'y': services.country_wise.day_wise_confirmed,
         'type': 'line',
     }
-    # update_database()
     return json.dumps( graph_data, default=myconverter )
 
 
 @app.route( '/api/day_wise_encountered', methods=['GET'] )
 def day_wise_encountered():
-    diagnosed = pd.Series( grouped['Diagnosed date'] ).tolist()
-    diagnosed_date = [datetime.strptime( x, "%Y-%m-%d %H:%M:%S" ) for x in diagnosed]
-    confirmed = pd.Series( grouped['confirmed'] ).tolist()
-
     graph_data = {
-        'x': diagnosed_date,
-        'y': confirmed,
+        'x': services.country_wise.diagnosed_date,
+        'y': services.country_wise.day_wise_encountered,
         'type': 'line',
     }
 
     return json.dumps( graph_data, default=myconverter )
 
 
-@app.route( '/api/travel_history_analysis' )
+@app.route('/api/travel_history_analysis')
 def travel_history_analysis():
     graph_data = [{
-        'values': pd.Series( pie_data['per'] ).tolist(),
-        'labels': pd.Series( pie_data['travel'] ).tolist(),
+        'values': services.travel_history.pie_data_percentage,
+        'labels': services.travel_history.pie_data_travel,
         'type': 'pie'
     }]
 
@@ -102,24 +94,47 @@ def travel_history_analysis():
 def state_wise_confirmed():
     # horizontal bar-graph
     graph_data = [{
-        'x': pd.Series( statewise_confirmed_grouped['Confirmed'] ).tolist(),
-        'y': pd.Series( statewise_confirmed_grouped['State'] ).tolist(),
+        'x': services.statewise.statewise_confirmed.statewise_confirmed,
+        'y': services.statewise.statewise_confirmed.statewise_confirmed_statename,
         'orientation': 'h',
         'type': 'bar'
     }]
     return json.dumps( graph_data )
 
 
-@app.route( '/api/getAll' )
+@app.route( '/api/get_all' )
 def get_all_graphs():
     graphs_data = {
-        'countryWise': {
-            'dayWiseConfirmed': grouped[['Diagnosed date', 'tot_confirmed']].to_dict( 'records' ),
-            'dayWiseEncountered': grouped[['Diagnosed date', 'confirmed']].to_dict( 'records' ),
-        }
+        'country_wise': {
+            'day_wise_confirmed' : {
+                'x': services.country_wise.diagnosed_date,
+                'y': services.country_wise.day_wise_confirmed,
+                'type': 'line',
+            },
+
+            'day_wise_encountered' : {
+                'x': services.country_wise.diagnosed_date,
+                'y': services.country_wise.day_wise_encountered,
+                'type': 'line',
+            }
+
+        },
+        'state_wise' : {
+            'state_wise_confirmed' : [{
+                'x': services.statewise.statewise_confirmed.statewise_confirmed,
+                'y': services.statewise.statewise_confirmed.statewise_confirmed_statename,
+                'orientation': 'h',
+                'type': 'bar'
+            }]
+        },
+        'travel_history_analysis' : [{
+            'values': services.travel_history.pie_data_percentage,
+            'labels': services.travel_history.pie_data_travel,
+            'type': 'pie'
+        }]
     }
 
-    return json.dumps( graphs_data, default=myconverter )
+    return json.dumps(graphs_data, default=myconverter )
 
 
 if __name__ == "__main__":

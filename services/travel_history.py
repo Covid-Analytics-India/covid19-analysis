@@ -64,3 +64,5 @@ pie_data['per'][pie_data['travel'] == ('Travelled from Saudi Arabia') ] = (Trave
 pie_data['per'][pie_data['travel'] == ('Travelled from Iran, Resident of Ladakh( S.N Medical College ) - Evacuee') ] = (Travelled_from_IranResidentofLadakhSNMedicalCollegeEvacuee/total)*100
 pie_data['per'][pie_data['travel'] == ('Travelled from Iran, Resident of Ladakh( AIIMS ) - Evacuee') ] = (Travelled_from_IranResidentofLadakhAIIMSEvacuee/total)*100
 
+pie_data_percentage = pd.Series( pie_data['per'] ).tolist(),
+pie_data_travel = pd.Series( pie_data['travel'] ).tolist(),
