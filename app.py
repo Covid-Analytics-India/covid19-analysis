@@ -1,28 +1,32 @@
-from datetime import date, datetime, timedelta
-import warnings
-import pandas as pd
-import json
-from flask import Flask
-from dateutil.parser import parse
-import requests
-from flask_cors import CORS, cross_origin
-# local module exporting
-import services.processes
-import services.country_wise
-import services.travel_history
-import services.statewise.statewise_confirmed
-
-import threading
-import time
 import atexit
-from apscheduler.schedulers.background import BackgroundScheduler
-
 # refreshing all imports to get the latest analysis
 import importlib
+import json
+import warnings
+from datetime import datetime
+
+# noinspection PyUnresolvedReferences
+import services.country_wise
+# local module exporting
+# noinspection PyUnresolvedReferences
+import services.processes
+# noinspection PyUnresolvedReferences
+import services.statewise.statewise_confirmed
+# noinspection PyUnresolvedReferences
+import services.travel_history
+# noinspection PyUnresolvedReferences
+import services.recovered
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from flask import Flask
+from flask_cors import CORS
+
 app = Flask( __name__ )
 cors = CORS( app )
 app.config['CORS_HEADERS'] = 'Content-Type'
 warnings.simplefilter( 'ignore' )
+
+
 # diagnosed date string format mein aa rha hai
 
 def update():
@@ -31,13 +35,14 @@ def update():
     services.processes.update_database2()
     # updating imports
     importlib.reload( services.statewise.statewise_confirmed )
-    importlib.reload(services.country_wise)
-    importlib.reload(services.travel_history)
+    importlib.reload( services.country_wise )
+    importlib.reload( services.travel_history )
+
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=update, trigger='interval', seconds=3600) # updating in every 1 hour
+scheduler.add_job( func=update, trigger='interval', seconds=3600 )  # updating in every 1 hour
 scheduler.start()
-atexit.register(lambda: scheduler.shutdown())
+atexit.register( lambda: scheduler.shutdown() )
 
 
 # t = threading.Thread(target=update)
@@ -67,6 +72,7 @@ def day_wise_confirmed():
         'x_label': 'Diagnosed Date',
         'y_label': 'Total cases confirmed'
     }
+
     return json.dumps( graph_data, default=myconverter )
 
 
@@ -84,7 +90,33 @@ def day_wise_encountered():
     return json.dumps( graph_data, default=myconverter )
 
 
-@app.route('/api/travel_history_analysis')
+@app.route('/api/day_wise_recovered', methods=['GET'])
+def day_wise_recovered():
+    graph_data = {
+        'x': services.recovered.recovery_dates,
+        'y': services.recovered.recovery_daywise,
+        'title':'Recoveries Day wise in india',
+        'x_label' : 'Date',
+        'y_label': 'recovered',
+        'type': 'line'
+    }
+    return json.dumps( graph_data, default=myconverter )
+
+
+@app.route( '/api/day_wise_recovered_cumulative', methods=['GET'] )
+def day_wise_recovered_cumulative():
+    graph_data = {
+        'x': services.recovered.recovery_dates,
+        'y': services.recovered.recovery_cumulative,
+        'title': 'Recovered cases in India(Cumulative)',
+        'x_label': 'Date',
+        'y_label': 'Total recovered',
+        'type': 'line'
+    }
+    return json.dumps( graph_data, default=myconverter )
+
+
+@app.route( '/api/travel_history_analysis', methods=['GET'] )
 def travel_history_analysis():
     graph_data = [{
         'values': services.travel_history.pie_data_percentage,
@@ -106,6 +138,7 @@ def state_wise_confirmed():
         'type': 'bar',
         'title': 'Total Number of Confirmed cases in Various States till Date'
     }]
+
     return json.dumps( graph_data )
 
 
@@ -129,6 +162,22 @@ def get_all_graphs():
                 'title': 'Day wise confirmed cases in India',
                 'x_label': 'Diagnosed Date',
                 'y_label': 'Total cases confirmed'
+            },
+            'day_wise_recovered_cumulative' : {
+                'x': services.recovered.recovery_dates,
+                'y': services.recovered.recovery_cumulative,
+                'title': 'Recovered cases in India(Cumulative)',
+                'x_label': 'Date',
+                'y_label': 'Total recovered',
+                'type': 'line'
+            },
+            'day_wise_recovered' : {
+                'x': services.recovered.recovery_dates,
+                'y': services.recovered.recovery_daywise,
+                'title': 'Recoveries Day wise in india',
+                'x_label': 'Date',
+                'y_label': 'recovered',
+                'type': 'line'
             }
 
         },
@@ -149,8 +198,8 @@ def get_all_graphs():
         }]
     }
 
-    return json.dumps(graphs_data, default=myconverter )
+    return json.dumps( graphs_data, default=myconverter )
 
 
 if __name__ == "__main__":
-    app.run(debug=True)  # for deployment turn it off(False)
+    app.run( debug=True )  # for deployment turn it off(False)

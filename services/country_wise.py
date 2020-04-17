@@ -1,5 +1,4 @@
-
-#from services.processes import data # deploy
+# deploy
 from services.fetch import get  # deploy
 file_loc = ''  # deploy
 '''
@@ -11,8 +10,9 @@ from datetime import datetime
 import json
 from pandas.io.json import json_normalize
 import pandas as pd
+pd.options.mode.chained_assignment = None # Remove warnings
 data = pd.read_csv( file_loc + './data/data.csv' )
-grouped = data.groupby( 'Diagnosed date' )['Diagnosed date', 'confirmed'].sum().reset_index()
+grouped = data.groupby( 'Diagnosed date' )[['Diagnosed date', 'confirmed']].sum().reset_index()
 s = 0
 grouped['tot_confirmed'] = grouped['confirmed']
 for row in grouped.index:
