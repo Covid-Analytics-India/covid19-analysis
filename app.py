@@ -5,17 +5,21 @@ import json
 import warnings
 from datetime import datetime
 
-# noinspection PyUnresolvedReferences
-import services.country_wise
+
 # local module exporting
+# add the below modules to auto reloading function
 # noinspection PyUnresolvedReferences
 import services.processes
+# noinspection PyUnresolvedReferences
+import services.country_wise
 # noinspection PyUnresolvedReferences
 import services.statewise.statewise_confirmed
 # noinspection PyUnresolvedReferences
 import services.travel_history
 # noinspection PyUnresolvedReferences
 import services.recovered
+# noinspection PyUnresolvedReferences
+import services.statewise.statewise_recovered
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
@@ -37,6 +41,8 @@ def update():
     importlib.reload( services.statewise.statewise_confirmed )
     importlib.reload( services.country_wise )
     importlib.reload( services.travel_history )
+    importlib.reload(services.recovered)
+    importlib.reload(services.statewise.statewise_recovered)
 
 
 scheduler = BackgroundScheduler()
@@ -136,10 +142,41 @@ def state_wise_confirmed():
         'y': services.statewise.statewise_confirmed.statewise_confirmed_statename,
         'orientation': 'h',
         'type': 'bar',
-        'title': 'Total Number of Confirmed cases in Various States till Date'
+        'title': 'Total Number of Confirmed cases in Various States till Date',
+        'x_label' : 'Total confirmed cases',
+        'y_label' : 'States'
     }]
 
     return json.dumps( graph_data )
+
+
+@app.route('/api/state_wise_recovered')
+def state_wise_recovered():
+    graph_data = [{
+        'x' : services.statewise.statewise_recovered.statewise_recovered_cases,
+        'y' : services.statewise.statewise_recovered.statewise_recovered_states,
+        'orientation': 'h',
+        'type': 'bar',
+        'title': 'Total Number of Recovered cases in Various States till Date',
+        'x_label': 'Total recovered cases',
+        'y_label': 'States'
+    }]
+
+    return json.dumps(graph_data)
+
+
+@app.route('/api/district_wise_recovery', methods=['GET'])
+def district_wise_recovery():
+    graph_data = [{
+        'x': services.statewise.statewise_recovered.recovered_cases_district_wise_recovered,
+        'y': services.statewise.statewise_recovered.recovered_cases_district_wise_district,
+        'orientation': 'h',
+        'type': 'bar',
+        'title': 'Total Number of Recovered cases in Various States till Date',
+        'x_label': 'Recovered cases',
+        'y_label': 'District'
+    }]
+    return json.dumps(graph_data)
 
 
 @app.route( '/api/get_all' )
@@ -187,8 +224,29 @@ def get_all_graphs():
                 'y': services.statewise.statewise_confirmed.statewise_confirmed_statename,
                 'orientation': 'h',
                 'type': 'bar',
-                'title': 'Total Number of Confirmed cases in Various States till Date'
+                'title': 'Total Number of Confirmed cases in Various States till Date',
+                'x_label' : 'Total confirmed cases',
+                'y_label' : 'States'
+            }],
+            'state_wise_recovered':[{
+                'x' : services.statewise.statewise_recovered.statewise_recovered_cases,
+                'y' : services.statewise.statewise_recovered.statewise_recovered_states,
+                'orientation': 'h',
+                'type': 'bar',
+                'title': 'Total Number of Recovered cases in Various States till Date',
+                'x_label': 'Total recovered cases',
+                'y_label': 'States'
+            }],
+            'district_wise_recovery' :[{
+                'x': services.statewise.statewise_recovered.recovered_cases_district_wise_recovered,
+                'y': services.statewise.statewise_recovered.recovered_cases_district_wise_district,
+                'orientation': 'h',
+                'type': 'bar',
+                'title': 'Total Number of Recovered cases in Various States till Date',
+                'x_label': 'Recovered cases',
+                'y_label': 'District'
             }]
+
         },
         'travel_history_analysis': [{
             'values': services.travel_history.pie_data_percentage,
