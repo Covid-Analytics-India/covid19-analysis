@@ -8,11 +8,14 @@ import glob
 from bs4 import BeautifulSoup
 from datetime import datetime
 import requests
+#import threading
+#import sys
+
 # deploy
-from services.fetch import get  # deploy
-import threading
-import  sys
+
 file_loc = ''  # deploy
+from services.fetch import get  # deploy
+
 '''
 # production
 file_loc = '.' # production
@@ -99,13 +102,15 @@ def update_database():
         print( "Connection error" )
 
 def update_database2():
-    print( 'Fetching and updating 1' )
+    print( 'Fetching and updating 2' )
     link = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSc_2y5N0I67wDU38DjDh35IZSIS30rQf7_NYZhtYYGU1jJYT6_kDx4YpF-qw0LSlGsBYP8pqM_a1Pd/pubhtml#'
     req = requests.get( link )
     print("Parsing")
     global soup
     soup = BeautifulSoup( req.content, "html.parser" )
     print('Parsing done')
+
+    # The Statewise data
     statewise_data = getDataFromSheet( id='1896310216', index=1 )
     statewise_data.drop( statewise_data.index[1], axis='index', inplace=True )
     statewise_data.drop( '', axis=1, inplace=True )
@@ -115,14 +120,21 @@ def update_database2():
     statewise_data['Active'] = statewise_data['Active'].astype( float )
     statewise_data['Delta_Recovered'] = statewise_data['Delta_Confirmed'].astype( float )
     statewise_data['Delta_Deaths'] = statewise_data['Delta_Deaths'].astype( float )
+    statewise_data.to_csv(file_loc + './data/statewise_data.csv', date_format="%Y-%m-%d %H:%M:%S")
 
-    statewise_data.to_csv(file_loc + './data/statewise_data.csv' )
+    # Fetching Death and Recovered Data
+    death_and_recovered = getDataFromSheet( id='200733542', index=2 )
+    # For death_and_recovered Dataset
+    death_and_recovered.drop( [''], axis=1, inplace=True )
+    death_and_recovered['Date'] = pd.to_datetime( death_and_recovered['Date'], dayfirst=True )
+    death_and_recovered['recovered'] = 0
+    death_and_recovered['death'] = 0
+    for status in death_and_recovered.index:
+        if (death_and_recovered['Patient_Status'][status] == "Recovered"):
+            death_and_recovered['recovered'][status] = 1
+        elif (death_and_recovered['Patient_Status'][status] == "Deceased"):
+            death_and_recovered['death'][status] = 1
+        elif (death_and_recovered['Patient_Status'][status] == "Deceased#"):
+            death_and_recovered['death'][status] = 1
 
-
-
-# print(threading.get_ident())
-# print("Before", threading.active_count)
-
-
-# print(threading.enumerate())
-# print( "After", threading.active_count )
+    death_and_recovered.to_csv(file_loc + './data/death_and_recovered.csv', date_format="%Y-%m-%d %H:%M:%S")
