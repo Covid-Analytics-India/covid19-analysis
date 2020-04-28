@@ -1,10 +1,21 @@
 # Byte-compiled / optimized / DLL files
 __pycache__
 __pycache__/
+__init__.cpython-37.pyc
 *.py[cod]
 *.pyc
 *$py.class
-__init__.py
+*.log
+
+*.pot
+
+*.pyc
+
+*/*/*/__pycache__/
+
+*/*/__pycache__/
+
+*/__pycache__/
 # C extensions
 *.so
 
@@ -139,3 +150,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 .gitignore
+
+# misc
+/services/__pycache__/
