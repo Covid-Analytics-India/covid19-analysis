@@ -3,6 +3,7 @@ import atexit
 import importlib
 import json
 import warnings
+from builtins import isinstance
 from datetime import datetime
 
 

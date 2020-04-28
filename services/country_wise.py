@@ -1,15 +1,11 @@
 
 # deploy
-from services.fetch import get  # deploy
 file_loc = ''  # deploy
 '''
 # production
 file_loc = '.' # production
-from fetch import get  # production
 '''
 from datetime import datetime
-import json
-from pandas.io.json import json_normalize
 import pandas as pd
 pd.options.mode.chained_assignment = None # Remove warnings
 data = pd.read_csv( file_loc + './data/data.csv' )
