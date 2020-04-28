@@ -66,6 +66,3 @@ pie_data['per'][pie_data['travel'] == ('Travelled from Iran, Resident of Ladakh(
 
 pie_data_percentage = pd.Series( pie_data['per'] ).tolist(),
 pie_data_travel = pd.Series( pie_data['travel'] ).tolist(),
-
-pie_data_percentage = pie_data_percentage[0]
-pie_data_travel = pie_data_travel[0]
