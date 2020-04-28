@@ -3,7 +3,6 @@ import atexit
 import importlib
 import json
 import warnings
-from builtins import isinstance
 from datetime import datetime
 
 
@@ -25,32 +24,8 @@ import services.statewise.statewise_recovered
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 from flask_cors import CORS
-from flask_restplus import Resource, Api, fields
-from werkzeug.utils import cached_property
-from werkzeug.contrib.fixers import ProxyFix
-from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask( __name__ )
-### swagger specific ###
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'
-SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "covid19analytics"
-    }
-)
-app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
-### end swagger specific ###
-
-app.wsgi_app = ProxyFix(app.wsgi_app)
-api = Api(app,
-          version='0.1',
-          title='Our sample API',
-          description='This is our sample API'
-)
-
 cors = CORS( app )
 app.config['CORS_HEADERS'] = 'Content-Type'
 warnings.simplefilter( 'ignore' )
@@ -149,12 +124,12 @@ def day_wise_recovered_cumulative():
 
 @app.route( '/api/travel_history_analysis', methods=['GET'] )
 def travel_history_analysis():
-    graph_data = {
+    graph_data = [{
         'values': services.travel_history.pie_data_percentage,
         'labels': services.travel_history.pie_data_travel,
         'type': 'pie',
         'title': 'Travel history analysis'
-    }
+    }]
 
     return json.dumps( graph_data )
 
@@ -162,7 +137,7 @@ def travel_history_analysis():
 @app.route( '/api/state_wise_confirmed' )
 def state_wise_confirmed():
     # horizontal bar-graph
-    graph_data = {
+    graph_data = [{
         'x': services.statewise.statewise_confirmed.statewise_confirmed,
         'y': services.statewise.statewise_confirmed.statewise_confirmed_statename,
         'orientation': 'h',
@@ -170,14 +145,14 @@ def state_wise_confirmed():
         'title': 'Total Number of Confirmed cases in Various States till Date',
         'x_label' : 'Total confirmed cases',
         'y_label' : 'States'
-    }
+    }]
 
     return json.dumps( graph_data )
 
 
 @app.route('/api/state_wise_recovered')
 def state_wise_recovered():
-    graph_data = {
+    graph_data = [{
         'x' : services.statewise.statewise_recovered.statewise_recovered_cases,
         'y' : services.statewise.statewise_recovered.statewise_recovered_states,
         'orientation': 'h',
@@ -185,14 +160,14 @@ def state_wise_recovered():
         'title': 'Total Number of Recovered cases in Various States till Date',
         'x_label': 'Total recovered cases',
         'y_label': 'States'
-    }
+    }]
 
     return json.dumps(graph_data)
 
 
 @app.route('/api/district_wise_recovery', methods=['GET'])
 def district_wise_recovery():
-    graph_data = {
+    graph_data = [{
         'x': services.statewise.statewise_recovered.recovered_cases_district_wise_recovered,
         'y': services.statewise.statewise_recovered.recovered_cases_district_wise_district,
         'orientation': 'h',
@@ -200,7 +175,7 @@ def district_wise_recovery():
         'title': 'Total Number of Recovered cases in Various States till Date',
         'x_label': 'Recovered cases',
         'y_label': 'District'
-    }
+    }]
     return json.dumps(graph_data)
 
 
@@ -244,7 +219,7 @@ def get_all_graphs():
 
         },
         'state_wise': {
-            'state_wise_confirmed': {
+            'state_wise_confirmed': [{
                 'x': services.statewise.statewise_confirmed.statewise_confirmed,
                 'y': services.statewise.statewise_confirmed.statewise_confirmed_statename,
                 'orientation': 'h',
@@ -252,8 +227,8 @@ def get_all_graphs():
                 'title': 'Total Number of Confirmed cases in Various States till Date',
                 'x_label' : 'Total confirmed cases',
                 'y_label' : 'States'
-            },
-            'state_wise_recovered':{
+            }],
+            'state_wise_recovered':[{
                 'x' : services.statewise.statewise_recovered.statewise_recovered_cases,
                 'y' : services.statewise.statewise_recovered.statewise_recovered_states,
                 'orientation': 'h',
@@ -261,9 +236,8 @@ def get_all_graphs():
                 'title': 'Total Number of Recovered cases in Various States till Date',
                 'x_label': 'Total recovered cases',
                 'y_label': 'States'
-            },
-            'state_codes':services.statewise.statewise_confirmed.state_code_list,
-            'district_wise_recovery' :{
+            }],
+            'district_wise_recovery' :[{
                 'x': services.statewise.statewise_recovered.recovered_cases_district_wise_recovered,
                 'y': services.statewise.statewise_recovered.recovered_cases_district_wise_district,
                 'orientation': 'h',
@@ -271,15 +245,15 @@ def get_all_graphs():
                 'title': 'Total Number of Recovered cases in Various States till Date',
                 'x_label': 'Recovered cases',
                 'y_label': 'District'
-            }
+            }]
 
         },
-        'travel_history_analysis': {
-            'values': services.travel_history.pie_data_percentage[0],
+        'travel_history_analysis': [{
+            'values': services.travel_history.pie_data_percentage,
             'labels': services.travel_history.pie_data_travel,
             'type': 'pie',
             'title': 'Travel history analysis'
-        }
+        }]
     }
 
     return json.dumps( graphs_data, default=myconverter )
