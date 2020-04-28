@@ -1,4 +1,6 @@
 import warnings
+from builtins import len
+
 import numpy as np
 import pandas as pd
 import json
