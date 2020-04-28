@@ -1,0 +1,402 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Documentation of Backend api's for covid19analytics",
+    "version": "1.0.0",
+    "title": "covid19analytics",
+    "contact": {
+      "email": "atharvu1@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Covid-19 Analysis",
+      "description": "API for requesting and return analysed data"
+    }
+  ],
+  "paths": {
+    "/api/day_wise_confirmed": {
+      "get": {
+        "tags": [
+          "Day wise confirmed overall"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/dayWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/day_wise_encountered": {
+      "get": {
+        "tags": [
+          "Day wise confirmed"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/dayWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/day_wise_recovered_cumulative": {
+      "get": {
+        "tags": [
+          "Day wise recovered cumulative"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/dayWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/day_wise_recovered": {
+      "get": {
+        "tags": [
+          "Day wise recovered"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/dayWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/travel_history_analysis": {
+      "get": {
+        "tags": [
+          "Travel history analysis"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/travelHistoryResponseGraphData"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/state_wise_confirmed": {
+      "get": {
+        "tags": [
+          "State wise confirmed cases"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/stateWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/state_wise_recovered": {
+      "get": {
+        "tags": [
+          "State wise recovered cases"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/stateWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/district_wise_recovery": {
+      "get": {
+        "tags": [
+          "District wise recovered cases"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/stateWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/get_all": {
+      "get": {
+        "tags": [
+          "All graphs merged"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/getAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "dayWiseResponse": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "array",
+            "items": {
+              "format": "unix-epoch",
+              "type" : "timestamp"
+            },
+            "example": [1589343248.00, 1523464560.00, 1589342148.00, 1590464560.00]
+          },
+          "y": {
+            "type": "array",
+            "items": {
+              "format": "int64",
+              "type" : "integer"
+            },
+             "example": [1, 2, 421, 12394]
+          },
+          "type": {
+            "type": "string",
+            "format": "string",
+            "example": "line"
+          },
+          "title": {
+            "type": "string",
+            "format": "string",
+            "example": "Title of the graph"
+          },
+          "x_label": {
+            "type": "string",
+            "format": "string"
+          },
+          "y_label": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "travelHistoryResponseGraphData": {
+        "type" : "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "format": "float",
+              "type" : "float"
+            },
+            "example": [1.002, 2.123, 0.55, 90.23]
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "format": "string",
+              "type": "string"
+            },
+            "example": ["Travelled from Delhi", "Travelled from Dubai"]
+          },
+          "type": {
+            "type": "string",
+            "format": "string",
+            "example": "pie"
+          },
+          "title": {
+            "type": "string",
+            "format": "string",
+            "example": "Travel history analysis"
+          }
+        }
+      },
+      "stateWiseResponse": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "array",
+            "items": {
+              "format": "float",
+              "type" : "float"
+            },
+            "example": [1000, 1912, 3134,315]
+          },
+          "y": {
+            "type": "array",
+            "items": {
+              "format": "string",
+              "type" : "string"
+            },
+            "example": ["Maharashtra", "Madhya Pradesh", "Rajasthan", "Delhi"]
+          },
+          "orientation": {
+            "type": "string",
+            "format": "string",
+            "example": "h"
+          },
+          "type": {
+            "type": "string",
+            "format": "string",
+            "example": "bar"
+          },
+          "title": {
+            "type": "string",
+            "format": "string",
+            "example": "Title of the graph"
+          },
+          "x_label": {
+            "type": "string",
+            "format": "string"
+          },
+          "y_label": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "getAll": {
+        "type": "object",
+        "properties": {
+          "country_wise": {
+            "type": "object",
+            "properties": {
+              "day_wise_confirmed": {
+                "type": "object,",
+                "$ref": "#/components/schemas/dayWiseResponse"
+              },
+              "day_wise_encountered": {
+                "type": "object",
+                "$ref": "#/components/schemas/dayWiseResponse"
+              },
+              "day_wise_recovered_cumulative":{
+                "type": "object",
+                "$ref": "#/components/schemas/dayWiseResponse"
+              },
+              "day_wise_recovered": {
+                "type": "object",
+                "$ref": "#/components/schemas/dayWiseResponse"
+              }
+            }
+          },
+          "state_wise": {
+            "type": "object",
+            "properties": {
+              "state_wise_confirmed": {
+                "type": "object",
+                "$ref": "#/components/schemas/stateWiseResponse"
+              },
+              "state_wise_recovered": {
+                "type": "object",
+                "$ref": "#/components/schemas/stateWiseResponse"
+              },
+              "state_codes": {
+                "type": "array",
+                "items": {
+                  "format": "string",
+                  "type": "string"
+                },
+                "example": ["MH", "MP", "RJ", "DL"]
+              },
+              "district_wise_recovery": {
+                "type": "object",
+                "$ref": "#/components/schemas/stateWiseResponse"
+              }
+            }
+          },
+          "travel_history_analysis": {
+            "type": "object",
+            "$ref" :  "#/components/schemas/travelHistoryResponseGraphData"
+          }
+        }
+      }
+    }
+  }
+}
