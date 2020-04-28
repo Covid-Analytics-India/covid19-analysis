@@ -1,18 +1,10 @@
 import warnings
-import numpy as np
 import pandas as pd
-import json
-from datetime import datetime
-import os
-import glob
 from bs4 import BeautifulSoup
-from datetime import datetime
 import requests
-#import threading
-#import sys
+
 
 # deploy
-
 file_loc = ''  # deploy
 from services.fetch import get  # deploy
 
@@ -73,6 +65,12 @@ def update_database():
                                      "source3": "Source 3"}
                             )
 
+        # changing nationality Indian to India
+        for ind in data.index:
+            if (data['Nationality'][ind] == "Indian"):
+                data['Nationality'][ind] = "India"
+
+
         data['Diagnosed date'] = pd.to_datetime( data['Diagnosed date'], dayfirst=True )
         data['Status change date'] = pd.to_datetime( data['Status change date'], dayfirst=True )
 
@@ -103,7 +101,7 @@ def update_database():
 
 def update_database2():
     print( 'Fetching and updating 2' )
-    link = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSc_2y5N0I67wDU38DjDh35IZSIS30rQf7_NYZhtYYGU1jJYT6_kDx4YpF-qw0LSlGsBYP8pqM_a1Pd/pubhtml#'
+    link = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSz8Qs1gE_IYpzlkFkCXGcL_BqR8hZieWVi-rphN1gfrO3H4lDtVZs4kd0C3P8Y9lhsT1rhoB-Q_cP4/pubhtml#'
     req = requests.get( link )
     print("Parsing")
     global soup
@@ -138,3 +136,6 @@ def update_database2():
             death_and_recovered['death'][status] = 1
 
     death_and_recovered.to_csv(file_loc + './data/death_and_recovered.csv', date_format="%Y-%m-%d %H:%M:%S")
+
+#update_database()
+#update_database2()
