@@ -1,15 +1,8 @@
 import warnings
-import numpy as np
 import pandas as pd
-import json
-from datetime import datetime
-import os
-import glob
 from bs4 import BeautifulSoup
-from datetime import datetime
 import requests
-#import threading
-#import sys
+
 
 # deploy
 file_loc = ''  # deploy

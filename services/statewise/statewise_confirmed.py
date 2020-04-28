@@ -1,4 +1,6 @@
 #file_loc = '../.' # production
+from builtins import float
+
 file_loc = ''  # deploy
 import pandas as pd
 
