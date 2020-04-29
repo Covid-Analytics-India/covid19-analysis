@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-/react-covid19-analysis
-/node-modules
-.now
-=======
 # Byte-compiled / optimized / DLL files
 __pycache__
 __pycache__/
@@ -157,4 +152,3 @@ cython_debug/
 
 # misc
 /services/__pycache__/
->>>>>>> 4bb244e28384825cfcb937984bfc94cae2cad0d9
