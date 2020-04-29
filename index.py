@@ -3,6 +3,7 @@ import atexit
 import importlib
 import json
 import warnings
+from builtins import isinstance
 from datetime import datetime
 
 
@@ -24,8 +25,32 @@ import services.statewise.statewise_recovered
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 from flask_cors import CORS
+from flask_restplus import Resource, Api, fields
+from werkzeug.utils import cached_property
+from werkzeug.contrib.fixers import ProxyFix
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask( __name__ )
+### swagger specific ###
+SWAGGER_URL = '/docs'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "covid19analytics"
+    }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+### end swagger specific ###
+
+app.wsgi_app = ProxyFix(app.wsgi_app)
+api = Api(app,
+          version='0.1',
+          title='Our sample API',
+          description='This is our sample API'
+)
+
 cors = CORS( app )
 app.config['CORS_HEADERS'] = 'Content-Type'
 warnings.simplefilter( 'ignore' )
