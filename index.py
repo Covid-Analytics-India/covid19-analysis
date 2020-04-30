@@ -74,7 +74,7 @@ def update():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job( func=update, trigger='interval', seconds=3600 )  # updating in every 1 hour
+scheduler.add_job( func=update, trigger='interval', seconds=60 )  # updating in every 1 hour
 scheduler.start()
 atexit.register( lambda: scheduler.shutdown() )
 
