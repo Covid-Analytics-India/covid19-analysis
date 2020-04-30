@@ -1,20 +1,12 @@
 import warnings
 from builtins import len
-
-import numpy as np
-import pandas as pd
-import json
-from datetime import datetime
+import shutil
 import os
-import glob
-from bs4 import BeautifulSoup
-from datetime import datetime
-import requests
-#import threading
-#import sys
+import pandas as pd
+from pandas.io.json import json_normalize
+#import requests
 
 # deploy
-
 file_loc = ''  # deploy
 from services.fetch import get  # deploy
 
@@ -53,7 +45,6 @@ def update_database():
         raw_data = apiResponse.json()
         raw_data = raw_data['raw_data']
         # JSON to dataframe
-        from pandas.io.json import json_normalize
         data = json_normalize( raw_data )
         data = data.rename( columns={"patientnumber": "ID",
                                      "statepatientnumber": "Government id",
@@ -75,9 +66,16 @@ def update_database():
                                      "source3": "Source 3"}
                             )
 
+        # changing nationality Indian to India
+        for ind in data.index:
+            if (data['Nationality'][ind] == "Indian"):
+                data['Nationality'][ind] = "India"
+
+        # converting the string values to datetime object
         data['Diagnosed date'] = pd.to_datetime( data['Diagnosed date'], dayfirst=True )
         data['Status change date'] = pd.to_datetime( data['Status change date'], dayfirst=True )
 
+        # replacing all the missing values with unknown
         data.replace( to_replace="", value="unknown", inplace=True )
         # creating new columns depicting the current status of patient
         data['recovered'] = 0
@@ -104,39 +102,61 @@ def update_database():
         print( "Connection error" )
 
 def update_database2():
-    print( 'Fetching and updating 2' )
-    link = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSc_2y5N0I67wDU38DjDh35IZSIS30rQf7_NYZhtYYGU1jJYT6_kDx4YpF-qw0LSlGsBYP8pqM_a1Pd/pubhtml#'
-    req = requests.get( link )
-    print("Parsing")
-    global soup
-    soup = BeautifulSoup( req.content, "html.parser" )
-    print('Parsing done')
+    state_district_wise = get( 'https://api.covid19india.org/v2/state_district_wise.json' )
 
-    # The Statewise data
-    statewise_data = getDataFromSheet( id='1896310216', index=1 )
-    statewise_data.drop( statewise_data.index[1], axis='index', inplace=True )
-    statewise_data.drop( '', axis=1, inplace=True )
-    statewise_data['Confirmed'] = statewise_data['Confirmed'].astype( float )
-    statewise_data['Recovered'] = statewise_data['Recovered'].astype( float )
-    statewise_data['Deaths'] = statewise_data['Deaths'].astype( float )
-    statewise_data['Active'] = statewise_data['Active'].astype( float )
-    statewise_data['Delta_Recovered'] = statewise_data['Delta_Confirmed'].astype( float )
-    statewise_data['Delta_Deaths'] = statewise_data['Delta_Deaths'].astype( float )
-    statewise_data.to_csv(file_loc + './data/statewise_data.csv', date_format="%Y-%m-%d %H:%M:%S")
+    df = pd.DataFrame( columns=['district', 'notes', 'active', 'confirmed', 'deceased', 'recovered', 'delta.confirmed',
+                                'delta.deceased', 'delta.recovered'] )
 
-    # Fetching Death and Recovered Data
-    death_and_recovered = getDataFromSheet( id='200733542', index=2 )
-    # For death_and_recovered Dataset
-    death_and_recovered.drop( [''], axis=1, inplace=True )
-    death_and_recovered['Date'] = pd.to_datetime( death_and_recovered['Date'], dayfirst=True )
-    death_and_recovered['recovered'] = 0
-    death_and_recovered['death'] = 0
-    for status in death_and_recovered.index:
-        if (death_and_recovered['Patient_Status'][status] == "Recovered"):
-            death_and_recovered['recovered'][status] = 1
-        elif (death_and_recovered['Patient_Status'][status] == "Deceased"):
-            death_and_recovered['death'][status] = 1
-        elif (death_and_recovered['Patient_Status'][status] == "Deceased#"):
-            death_and_recovered['death'][status] = 1
+    state_district_wise = state_district_wise.json()
+    #print(state_district_wise)
+    #print(json_normalize(state_district_wise.to_dict()))
+    for row in state_district_wise:
+        state_district_wise = row
+        data = json_normalize( state_district_wise)
+        state = json_normalize( data['districtData'][0] )
+        df = df.append( state )
+    df = df[["district", "active", "confirmed", "deceased", "recovered"]]
+    df = df[df.district != "Unknown"]
+    df.to_csv( file_loc + './data/district_wise.csv', index=False, date_format="%Y-%m-%d %H:%M:%S" )
 
-    death_and_recovered.to_csv(file_loc + './data/death_and_recovered.csv', date_format="%Y-%m-%d %H:%M:%S")
+
+def Insert_row_(row_number, df, row_value):
+    # Slice the upper half of the dataframe
+    df1 = df[0:row_number]
+
+    # Store the result of lower half of the dataframe
+    df2 = df[row_number:]
+
+    # Inser the row in the upper half dataframe
+    df1.loc[row_number] = row_value
+
+    # Concat the two dataframes
+    df_result = pd.concat( [df1, df2] )
+
+    # Reassign the index labels
+    df_result.index = [*range( df_result.shape[0] )]
+
+    # Return the updated dataframe
+    return df_result
+
+
+def get_govt_data_from_kaggle():
+    #os.system('kaggle competitions list')
+    try :
+        os.system( 'kaggle datasets download -f complete.csv imdevskp/covid19-corona-virus-india-dataset')
+    except:
+        print("Can't connect to kaggle")
+
+    # Let's create a row which we want to insert
+    row_number = 930
+    row_value = ['2020-04-13', 'Meghalaya', 0, 0, 0, 25.4670, 91.3662, 0, 1]
+    try:
+        govt_data = pd.read_csv('complete.csv')
+        govt_data = Insert_row_( row_number, govt_data, row_value )
+    except FileNotFoundError:
+        govt_data = pd.read_csv(file_loc + './data/complete.csv')
+
+    govt_data.to_csv('complete.csv') #date_format="%Y-%m-%d %H:%M:%S"
+    source = './complete.csv'
+    destination = file_loc + './data/complete.csv'
+    shutil.move( source, destination)
