@@ -1,0 +1,487 @@
+district,active,confirmed,deceased,recovered
+North and Middle Andaman,0,1,0,1
+South Andaman,17,32,0,15
+Anantapur,37,61,4,20
+Chittoor,64,80,0,16
+East Godavari,28,42,0,14
+Guntur,192,287,8,87
+Krishna,206,246,8,32
+Kurnool,334,386,9,43
+Prakasam,37,60,0,23
+S.P.S. Nellore,55,84,2,27
+Srikakulam,5,5,0,0
+Visakhapatnam,3,23,0,20
+West Godavari,45,56,0,11
+Y.S.R.,45,73,0,28
+Lohit,0,1,0,1
+Bongaigaon,5,5,0,0
+Cachar,2,2,0,0
+Dhubri,3,4,0,1
+Goalpara,1,5,0,4
+Golaghat,1,1,0,0
+Hailakandi,0,1,1,0
+Jorhat,8,8,0,0
+Kamrup,0,1,0,1
+Kamrup Metropolitan,6,6,0,0
+Lakhimpur,0,1,0,1
+Morigaon,3,3,0,0
+Nalbari,3,3,0,0
+South Salmara Mancachar,0,1,0,1
+Araria,1,1,0,0
+Arwal,4,4,0,0
+Aurangabad,8,8,0,0
+Banka,3,3,0,0
+Begusarai,6,11,0,5
+Bhagalpur,4,5,0,1
+Bhojpur,10,11,0,1
+Buxar,35,40,0,5
+Darbhanga,5,5,0,0
+East Champaran,5,5,0,0
+Gaya,1,6,0,5
+Gopalganj,15,18,0,3
+Jehanabad,4,4,0,0
+Kaimur Bhabua,18,18,0,0
+Lakhisarai,3,4,0,1
+Madhepura,2,2,0,0
+Madhubani,5,5,0,0
+Munger,74,92,1,17
+Nalanda,23,35,0,12
+Nawada,2,4,0,2
+Patna,38,44,0,6
+Purnia,1,1,0,0
+Rohtas,45,45,0,0
+Saran,5,6,0,1
+Sheikhpura,1,1,0,0
+Sitamarhi,6,6,0,0
+Siwan,5,30,0,25
+Vaishali,2,3,1,0
+West Champaran,5,5,0,0
+Chandigarh,56,74,0,18
+Bilaspur,0,1,0,1
+Durg,0,1,0,1
+Korba,0,28,0,28
+Raipur,1,6,0,5
+Rajnandgaon,0,1,0,1
+Surajpur,3,3,0,0
+Central Delhi,184,184,0,0
+East Delhi,38,38,0,0
+New Delhi,37,37,0,0
+North Delhi,60,60,0,0
+North East Delhi,25,25,0,0
+North West Delhi,32,32,0,0
+Shahdara,48,48,0,0
+South Delhi,70,70,0,0
+South East Delhi,130,130,0,0
+South West Delhi,42,42,0,0
+West Delhi,122,122,0,0
+North Goa,0,6,0,6
+South Goa,0,1,0,1
+Ahmadabad,2561,3026,149,316
+Anand,46,74,4,24
+Aravalli,18,19,1,0
+Banas Kantha,23,28,1,4
+Bharuch,9,31,2,20
+Bhavnagar,21,47,5,21
+Botad,17,20,1,2
+Chota Udaipur,7,13,0,6
+Dahod,4,5,0,1
+Gandhinagar,34,48,2,12
+Gir Somnath,1,3,0,2
+Jamnagar,0,1,1,0
+Kachchh,0,6,1,5
+Kheda,4,6,0,2
+Mahesana,6,11,0,5
+Mahisagar,6,11,0,5
+Morbi,0,1,0,1
+Narmada,2,12,0,10
+Navsari,6,6,0,0
+Panch Mahals,29,34,2,3
+Patan,5,17,1,11
+Porbandar,0,3,0,3
+Rajkot,40,58,1,17
+Sabar Kantha,1,3,0,2
+Surat,535,614,25,54
+Surendranagar,1,1,0,0
+Tapi,1,1,0,0
+Dang,2,2,0,0
+Vadodara,185,289,17,87
+Valsad,4,5,1,0
+Ambala,3,14,1,10
+Bhiwani,1,3,0,2
+Charki Dadri,0,1,0,1
+Faridabad,11,53,1,41
+Fatehabad,0,1,0,1
+Gurugram,16,54,0,38
+Hisar,2,4,0,2
+Jhajjar,24,24,0,0
+Jind,0,2,0,2
+Kaithal,0,2,0,2
+Karnal,0,6,1,5
+Kurukshetra,0,2,0,2
+Nuh,8,58,0,50
+Palwal,2,34,0,32
+Panchkula,1,18,0,17
+Panipat,8,13,0,5
+Rohtak,3,4,1,0
+Sirsa,0,4,0,4
+Sonipat,21,25,0,4
+Yamunanagar,0,3,0,3
+Italians,0,14,0,14
+Chamba,1,6,0,5
+Hamirpur,2,2,0,0
+Kangra,0,5,1,4
+Sirmaur,1,2,0,1
+Solan,3,9,1,5
+Una,3,16,0,13
+Anantnag,82,83,1,0
+Badgam,10,20,0,10
+Bandipore,102,127,1,24
+Baramula,60,84,3,21
+Ganderbal,9,14,0,5
+Jammu,0,26,0,26
+Kathua,1,1,0,0
+Kishtwar,0,1,0,1
+Kulgam,9,11,0,2
+Kupwara,30,49,0,19
+Pulwama,4,7,0,3
+Rajouri,1,4,0,3
+Ramban,1,1,0,0
+Reasi,1,1,0,0
+Samba,0,4,0,4
+Shupiyan,59,72,0,13
+Srinagar,19,89,2,68
+Udhampur,2,20,1,17
+Bokaro,5,10,1,4
+Deoghar,2,2,0,0
+Dhanbad,0,2,0,2
+Garhwa,3,3,0,0
+Giridih,1,1,0,0
+Hazaribagh,1,3,0,2
+Jamtara,2,2,0,0
+Kodarma,1,1,0,0
+Palamu,3,3,0,0
+Ranchi,66,78,2,10
+Simdega,1,2,0,1
+Bagalkote,22,29,1,6
+Ballari,8,13,0,5
+Belagavi,61,69,1,7
+Bengaluru,78,145,5,62
+Bengaluru Rural,3,12,0,9
+Bidar,6,15,0,9
+Chikkaballapura,5,18,2,11
+Chitradurga,0,1,0,1
+Dakshina Kannada,7,21,3,11
+Davanagere,2,4,0,2
+Dharwad,7,9,0,2
+Gadag,4,5,1,0
+Kalaburagi,41,53,5,7
+Kodagu,0,1,0,1
+Mandya,14,18,0,4
+Mysuru,32,90,0,58
+Tumakuru,2,5,2,1
+Udupi,0,3,0,3
+Uttara Kannada,1,11,0,10
+Vijayapura,35,43,2,6
+Alappuzha,0,5,0,5
+Ernakulam,2,24,1,21
+Idukki,14,24,0,10
+Kannur,46,115,1,68
+Kasaragod,12,179,0,167
+Kollam,12,23,0,11
+Kottayam,17,20,0,3
+Kozhikode,1,24,0,23
+Malappuram,2,24,1,21
+Palakkad,2,13,0,11
+Pathanamthitta,1,17,0,16
+Thiruvananthapuram,1,17,1,15
+Thrissur,0,13,0,13
+Wayanad,0,3,0,3
+Kargil,3,7,0,4
+Leh,2,15,0,13
+Agar Malwa,11,12,1,0
+Alirajpur,3,3,0,0
+Ashoknagar,0,1,1,0
+Barwani,12,26,0,14
+Betul,1,1,0,0
+Bhopal,331,508,15,162
+Burhanpur,1,1,0,0
+Chhindwara,2,5,1,2
+Dewas,10,24,7,7
+Dhar,46,48,1,1
+Dindori,1,1,0,0
+Gwalior,2,4,0,2
+Harda,1,1,0,0
+Hoshangabad,18,35,3,14
+Indore,1241,1486,68,177
+Jabalpur,77,85,1,7
+Khandwa,11,46,4,31
+Khargone,41,70,7,22
+Mandsaur,7,9,2,0
+Morena,0,13,0,13
+Raisen,52,55,2,1
+Ratlam,14,14,0,0
+Rewa,2,2,0,0
+Sagar,4,5,0,1
+Shahdol,3,3,0,0
+Shajapur,2,6,0,4
+Sheopur,0,4,0,4
+Shivpuri,0,2,0,2
+Tikamgarh,2,2,0,0
+Ujjain,109,138,24,5
+Vidisha,0,13,0,13
+Other Region,2,2,0,0
+Ahmadnagar,17,42,2,23
+Akola,30,39,1,8
+Amravati,17,28,7,4
+Aurangabad,102,131,7,22
+Bhandara,1,1,0,0
+Bid,0,1,0,1
+Buldana,3,21,1,17
+Chandrapur,0,2,0,2
+Dhule,22,25,3,0
+Gondiya,0,1,0,1
+Hingoli,14,15,0,1
+Jalgaon,30,40,9,1
+Jalna,1,2,0,1
+Kolhapur,10,14,0,4
+Latur,3,12,1,8
+Mumbai,5679,7061,290,1092
+Nagpur,100,139,2,37
+Nanded,3,3,0,0
+Nandurbar,10,11,1,0
+Nashik,179,197,12,6
+Osmanabad,0,3,0,3
+Palghar,119,169,4,46
+Parbhani,1,2,0,1
+Pune,912,1248,88,248
+Raigarh,44,71,3,24
+Ratnagiri,2,8,1,5
+Sangli,3,29,1,25
+Satara,21,32,2,9
+Sindhudurg,1,2,0,1
+Solapur,93,99,6,0
+Thane,755,943,16,172
+Washim,1,2,0,1
+Yavatmal,69,79,0,10
+Other States,24,26,2,0
+Imphal East,0,1,0,1
+Imphal West,0,1,0,1
+East Khasi Hills,10,11,1,0
+Aizawl,1,1,0,0
+Baleshwar,19,19,0,0
+Bhadrak,17,19,0,2
+Cuttack,0,1,0,1
+Debagarh,1,1,0,0
+Dhenkanal,0,1,0,1
+Jajapur,35,36,0,1
+Jharsuguda,1,1,0,0
+Kalahandi,0,2,0,2
+Kendrapara,1,2,0,1
+Kendujhar,1,1,0,0
+Khordha,19,47,1,27
+Koraput,1,1,0,0
+Puri,0,1,0,1
+Sundargarh,5,10,0,5
+Mahe,0,1,0,1
+Puducherry,3,7,0,4
+Amritsar,34,42,2,6
+Barnala,0,2,1,1
+Bathinda,2,2,0,0
+Faridkot,4,6,0,2
+Fatehgarh Sahib,0,2,0,2
+Firozpur,2,2,0,0
+Gurdaspur,3,4,1,0
+Hoshiarpur,5,11,1,5
+Jalandhar,77,89,4,8
+Kapurthala,9,12,1,2
+Ludhiana,53,63,4,6
+Mansa,10,13,0,3
+Moga,1,5,0,4
+Pathankot,15,25,1,9
+Patiala,61,64,1,2
+Rupnagar,2,5,1,2
+S.A.S. Nagar,53,86,2,31
+Sangrur,3,6,0,3
+Shahid Bhagat Singh Nagar,4,23,1,18
+Sri Muktsar Sahib,4,4,0,0
+Tarn Taran,14,14,0,0
+Ajmer,137,150,0,13
+Alwar,3,9,1,5
+Banswara,35,66,0,31
+Baran,1,1,0,0
+Barmer,1,2,0,1
+Bharatpur,103,111,2,6
+Bhilwara,5,37,2,30
+Bikaner,0,37,1,36
+Chittaurgarh,18,19,1,0
+Churu,0,14,0,14
+Dausa,13,21,0,8
+Dhaulpur,11,12,0,1
+Dungarpur,1,6,0,5
+Hanumangarh,1,11,0,10
+Jaipur,554,907,32,321
+Jaisalmer,5,35,0,30
+Jhalawar,20,40,0,20
+Jhunjhunu,9,42,0,33
+Jodhpur,384,510,6,120
+Karauli,1,3,0,2
+Kota,81,197,7,109
+Nagaur,104,118,1,13
+Pali,10,12,0,2
+Pratapgarh,0,2,0,2
+Rajsamand,1,1,0,0
+Sawai Madhopur,4,8,0,4
+Sikar,2,6,2,2
+Tonk,98,134,1,35
+Udaipur,4,8,0,4
+Italians,0,2,0,2
+Evacuees,27,61,0,34
+Other state,-2,0,2,0
+Ariyalur,2,6,0,4
+Chengalpattu,27,76,1,48
+Chennai,681,910,15,214
+Coimbatore,16,141,0,125
+Cuddalore,6,27,0,21
+Dharmapuri,1,1,0,0
+Dindigul,8,80,1,71
+Erode,0,70,1,69
+Kallakurichi,6,9,0,3
+Kancheepuram,15,25,1,9
+Kanniyakumari,6,16,0,10
+Karur,0,41,0,41
+Madurai,42,84,2,40
+Nagapattinam,9,44,0,35
+Namakkal,12,61,0,49
+Perambalur,8,9,0,1
+Pudukkottai,1,1,0,0
+Ramanathapuram,8,18,0,10
+Ranipet,6,39,0,33
+Salem,9,32,0,23
+Sivaganga,2,12,0,10
+Tenkasi,30,35,0,5
+Thanjavur,19,54,0,35
+The Nilgiris,0,9,0,9
+Theni,6,44,1,37
+Thiruvallur,26,56,0,30
+Thiruvarur,14,30,0,16
+Thoothukkudi,0,27,2,25
+Tiruchirappalli,6,51,0,45
+Tirunelveli,11,65,0,54
+Tirupathur,1,18,0,17
+Tiruppur,9,112,0,103
+Tiruvannamalai,1,11,0,10
+Vellore,8,23,1,14
+Viluppuram,29,54,2,23
+Virudhunagar,13,32,0,19
+Adilabad,13,21,0,8
+Bhadradri Kothagudem,0,4,0,4
+Hyderabad,376,548,21,151
+Jagitial,1,3,0,2
+Jangoan,2,3,0,1
+Jayashankar,3,3,0,0
+Jogulamba Gadwal,35,45,1,9
+Kamareddy,4,12,0,8
+Karimnagar,4,19,0,15
+Khammam,7,8,0,1
+Kumuram Bheem Asifabad,7,7,0,0
+Mahabubabad,0,1,0,1
+Mahabubnagar,3,11,0,8
+Mancherial,0,1,1,0
+Medak,2,5,0,3
+Medchal Malkajgiri,18,22,1,3
+Mulugu,0,2,0,2
+Nagarkurnool,0,2,0,2
+Nalgonda,6,17,0,11
+Narayanpet,0,1,1,0
+Nirmal,9,20,0,11
+Nizamabad,34,61,0,27
+Peddapalli,1,2,0,1
+Rajanna Sircilla,3,3,0,0
+Ranga Reddy,21,33,2,10
+Sangareddy,2,7,0,5
+Siddipet,0,1,0,1
+Suryapet,79,83,0,4
+Vikarabad,30,37,1,6
+Warangal Urban,5,27,0,22
+Gomati,0,1,0,1
+North Tripura,0,1,0,1
+Agra,363,468,14,91
+Aligarh,34,35,1,0
+Amroha,19,26,1,6
+Auraiya,6,10,0,4
+Azamgarh,4,8,0,4
+Baghpat,2,15,0,13
+Bahraich,9,9,0,0
+Balrampur,1,1,0,0
+Banda,4,4,0,0
+Bara Banki,0,1,0,1
+Bareilly,1,8,1,6
+Basti,9,23,1,13
+Bhadohi,0,1,0,1
+Bijnor,31,32,0,1
+Budaun,15,16,0,1
+Bulandshahr,41,51,1,9
+Etah,4,4,0,0
+Etawah,1,2,0,1
+Firozabad,99,111,2,10
+Gautam Buddha Nagar,53,141,0,88
+Ghaziabad,18,62,0,44
+Ghazipur,1,6,0,5
+Gonda,2,2,0,0
+Gorakhpur,2,2,0,0
+Hapur,21,26,0,5
+Hardoi,0,2,0,2
+Hathras,0,4,0,4
+Jalaun,3,3,0,0
+Jaunpur,4,8,0,4
+Jhansi,4,4,0,0
+Kannauj,6,7,0,1
+Kanpur Dehat,1,1,0,0
+Kanpur Nagar,189,210,4,17
+Kasganj,3,3,0,0
+Kaushambi,0,2,0,2
+Kheri,0,4,0,4
+Lucknow,143,206,1,62
+Mahrajganj,1,7,0,6
+Mainpuri,5,5,0,0
+Mathura,11,13,1,1
+Mau,1,1,0,0
+Meerut,48,102,5,49
+Mirzapur,1,3,0,2
+Moradabad,96,110,6,8
+Muzaffarnagar,14,23,0,9
+Pilibhit,1,3,0,2
+Pratapgarh,1,7,0,6
+Prayagraj,3,4,0,1
+Rae Bareli,44,44,0,0
+Rampur,19,24,0,5
+Saharanpur,174,187,0,13
+Sambhal,18,18,0,0
+Sant Kabir Nagar,23,23,0,0
+Shahjahanpur,0,1,0,1
+Shamli,3,27,0,24
+Shrawasti,4,5,1,0
+Sitapur,3,20,0,17
+Sultanpur,3,3,0,0
+Unnao,1,1,0,0
+Varanasi,52,61,1,8
+Ayodhya,1,1,0,0
+Almora,0,1,0,1
+Dehradun,17,31,0,14
+Haridwar,2,7,0,5
+Nainital,2,10,0,8
+Pauri Garhwal,0,1,0,1
+Udham Singh Nagar,3,7,0,4
+Darjeeling,4,4,0,0
+Hooghly,12,12,0,0
+Howrah,79,79,0,0
+Jalpaiguri,5,5,0,0
+Kalimpong,7,7,0,0
+Kolkata,184,184,0,0
+Medinipur East,22,22,0,0
+Murshidabad,2,2,0,0
+Nadia,6,6,0,0
+North 24 Parganas,47,47,0,0
+Paschim Bardhaman,7,7,0,0
+Purba Bardhaman,1,1,0,0
+South 24 Parganas,12,12,0,0
