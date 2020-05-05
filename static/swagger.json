@@ -1,5 +1,6 @@
 {
   "openapi": "3.0.0",
+  "trailingSlash": "true",
   "info": {
     "description": "Documentation of Backend api's for covid19analytics",
     "version": "1.0.0",
@@ -38,7 +39,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/dayWiseResponse"
+                    "$ref": "#/components/schemas/countryWiseResponse"
                   }
                 }
               }
@@ -61,7 +62,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/dayWiseResponse"
+                    "$ref": "#/components/schemas/countryWiseResponse"
                   }
                 }
               }
@@ -83,7 +84,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/dayWiseResponse"
+                    "$ref": "#/components/schemas/countryWiseResponse"
                   }
                 }
               }
@@ -106,7 +107,53 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/dayWiseResponse"
+                    "$ref": "#/components/schemas/countryWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/day_wise_deaths": {
+      "get": {
+        "tags": [
+          "Day wise Deaths"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/countryWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/day_wise_deaths_cumulative": {
+      "get": {
+        "tags": [
+          "Deaths cumulative"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/countryWiseResponse"
                   }
                 }
               }
@@ -181,6 +228,72 @@
         }
       }
     },
+    "/api/state_wise_deaths": {
+      "get": {
+        "tags": [
+          "State wise Deaths"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/stateWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/district_wise_confirmed": {
+      "get": {
+        "tags": [
+          "District wise confirmed cases"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/districtWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/district_wise_active": {
+      "get": {
+        "tags": [
+          "District wise active cases"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/districtWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/district_wise_recovery": {
       "get": {
         "tags": [
@@ -194,7 +307,29 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/stateWiseResponse"
+                    "$ref": "#/components/schemas/districtWiseResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/district_wise_deaths": {
+      "get": {
+        "tags": [
+          "District wise Deaths"
+        ],
+        "summary": "Returns graph_data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/districtWiseResponse"
                   }
                 }
               }
@@ -228,7 +363,7 @@
   },
   "components": {
     "schemas": {
-      "dayWiseResponse": {
+      "countryWiseResponse": {
         "type": "object",
         "properties": {
           "x": {
@@ -342,6 +477,50 @@
           }
         }
       },
+      "districtWiseResponse": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "array",
+            "items": {
+              "format": "float",
+              "type" : "float"
+            },
+            "example": [1000, 1912, 3134,315]
+          },
+          "y": {
+            "type": "array",
+            "items": {
+              "format": "string",
+              "type" : "string"
+            },
+            "example": ["Mumbai", "Indore", "Kota", "Rajgarh"]
+          },
+          "orientation": {
+            "type": "string",
+            "format": "string",
+            "example": "h"
+          },
+          "type": {
+            "type": "string",
+            "format": "string",
+            "example": "bar"
+          },
+          "title": {
+            "type": "string",
+            "format": "string",
+            "example": "Title of the graph"
+          },
+          "x_label": {
+            "type": "string",
+            "format": "string"
+          },
+          "y_label": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
       "getAll": {
         "type": "object",
         "properties": {
@@ -350,19 +529,27 @@
             "properties": {
               "day_wise_confirmed": {
                 "type": "object,",
-                "$ref": "#/components/schemas/dayWiseResponse"
+                "$ref": "#/components/schemas/countryWiseResponse"
               },
               "day_wise_encountered": {
                 "type": "object",
-                "$ref": "#/components/schemas/dayWiseResponse"
+                "$ref": "#/components/schemas/countryWiseResponse"
               },
-              "day_wise_recovered_cumulative":{
+              "recovered_cumulative":{
                 "type": "object",
-                "$ref": "#/components/schemas/dayWiseResponse"
+                "$ref": "#/components/schemas/countryWiseResponse"
               },
               "day_wise_recovered": {
                 "type": "object",
-                "$ref": "#/components/schemas/dayWiseResponse"
+                "$ref": "#/components/schemas/countryWiseResponse"
+              },
+              "deaths_cumulative": {
+                "type": "object",
+                "$ref": "#/components/schemas/countryWiseResponse"
+              },
+              "day_wise_deaths": {
+                "type": "object",
+                "$ref": "#/components/schemas/countryWiseResponse"
               }
             }
           },
@@ -377,6 +564,10 @@
                 "type": "object",
                 "$ref": "#/components/schemas/stateWiseResponse"
               },
+              "state_wise_deaths": {
+                "type": "object",
+                "$ref": "#/components/schemas/stateWiseResponse"
+              },
               "state_codes": {
                 "type": "array",
                 "items": {
@@ -384,10 +575,27 @@
                   "type": "string"
                 },
                 "example": ["MH", "MP", "RJ", "DL"]
-              },
-              "district_wise_recovery": {
+              }
+            }
+          },
+          "district_wise": {
+            "type": "object",
+            "properties": {
+              "district_wise_confirmed": {
                 "type": "object",
-                "$ref": "#/components/schemas/stateWiseResponse"
+                "$ref": "#/components/schemas/districtWiseResponse"
+              },
+              "district_wise_active": {
+                "type": "object",
+                "$ref": "#/components/schemas/districtWiseResponse"
+              },
+              "district_wise_recovered": {
+                "type": "object",
+                "$ref": "#/components/schemas/districtWiseResponse"
+              },
+              "district_wise_deaths": {
+                "type": "object",
+                "$ref": "#/components/schemas/districtWiseResponse"
               }
             }
           },
