@@ -160,4 +160,6 @@ def get_govt_data_from_kaggle():
     source = './complete.csv'
     destination = file_loc + './data/complete.csv'
     shutil.move( source, destination)
-    print('Kaggle data grabbed')
+#update_database()
+#update_database2()
+#get_govt_data_from_kaggle()

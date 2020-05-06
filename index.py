@@ -1,5 +1,7 @@
-import atexit
 # refreshing all imports to get the latest analysis
+# for deployment turn it off(False)
+# TODO: REMOVE DEBUG CONSTANT BEFORE DEPLOYMENT
+import atexit
 import importlib
 import json
 import warnings
@@ -57,7 +59,7 @@ warnings.simplefilter( 'ignore' )
 
 
 # diagnosed date string format mein aa rha hai
-
+'''
 def update():
 
     # updating database
@@ -74,26 +76,45 @@ def update():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job( func=update, trigger='interval', seconds=60 )  # updating in every 1 hour
+scheduler.add_job( func=update, trigger='interval', seconds=3600 )  # updating in every 1 hour
 scheduler.start()
 atexit.register( lambda: scheduler.shutdown() )
 
-
+'''
 # t = threading.Thread(target=update)
 # t.start()
 
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
-        # date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
-        # time = date_time.strftime("%d %B %Y")
-        # return time
+        #date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
+        #time = date_time.strftime("%d %B %Y")
+        #return time
         return o.timestamp()
 
 
 @app.route( '/' )
 def index():
     return 'Hello World!'
+
+
+@app.route('/api/update')
+def update():
+    print("Updating DB")
+    # updating database
+    services.processes.update_database()
+    services.processes.update_database2()
+    services.processes. get_govt_data_from_kaggle()
+
+    # updating imports
+    importlib.reload(services.statewise.statewise_confirmed_recovered_deaths )
+    importlib.reload(services.country_wise_confirmed )
+    importlib.reload(services.travel_history )
+    importlib.reload(services.country_wise_recovered_and_deaths )
+    importlib.reload(services.district_wise.district_all)
+
+    return 'Data updated'
+
 
 
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
