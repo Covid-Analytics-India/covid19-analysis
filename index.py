@@ -32,7 +32,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask( __name__ )
 ### swagger specific ###
-SWAGGER_URL = '/docs'
+SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.json'
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -74,7 +74,7 @@ def update():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job( func=update, trigger='interval', seconds=3600 )  # updating in every 1 hour
+scheduler.add_job( func=update, trigger='interval', seconds=60 )  # updating in every 1 hour
 scheduler.start()
 atexit.register( lambda: scheduler.shutdown() )
 
