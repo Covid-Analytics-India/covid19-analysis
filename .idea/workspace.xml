@@ -7,7 +7,10 @@
       <change beforePath="$PROJECT_DIR$/data/data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/district_wise.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/district_wise.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/index.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/country_wise_confirmed.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/country_wise_recovered_and_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed_recovered_and_deaths.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,6 +48,27 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.index">
+    <configuration name="country_wise_recovered_and_deaths" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="covid19-analysis" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="E:\Corona\Web\covid19-analysis\services\country_wise_confirmed_recovered_and_deaths.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="district_all" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="covid19-analysis" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -108,27 +132,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="recovered_and_deaths" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="covid19-analysis" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="E:\Corona\Web\covid19-analysis\services\country_wise_recovered_and_deaths.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="statewise_confirmed_recovered_deaths" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="covid19-analysis" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -153,10 +156,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.index" />
-        <item itemvalue="Python.processes" />
         <item itemvalue="Python.statewise_confirmed_recovered_deaths" />
+        <item itemvalue="Python.country_wise_recovered_and_deaths" />
+        <item itemvalue="Python.processes" />
         <item itemvalue="Python.district_all" />
-        <item itemvalue="Python.recovered_and_deaths" />
       </list>
     </recent_temporary>
   </component>

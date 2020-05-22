@@ -14,13 +14,13 @@ from datetime import datetime
 # noinspection PyUnresolvedReferences
 import services.processes
 # noinspection PyUnresolvedReferences
-import services.country_wise_confirmed
+#import services.country_wise_confirmed
 # noinspection PyUnresolvedReferences
 import services.statewise.statewise_confirmed_recovered_deaths
 # noinspection PyUnresolvedReferences
 import services.travel_history
 # noinspection PyUnresolvedReferences
-import services.country_wise_recovered_and_deaths
+import services.country_wise_confirmed_recovered_and_deaths
 # noinspection PyUnresolvedReferences
 import services.district_wise.district_all
 
@@ -87,10 +87,10 @@ atexit.register( lambda: scheduler.shutdown() )
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
-        #date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
-        #time = date_time.strftime("%d %B %Y")
-        #return time
-        return o.timestamp()
+        date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
+        time = date_time.strftime("%d %B %Y")
+        return time
+        #return o.timestamp()
 
 
 @app.route( '/' )
@@ -102,15 +102,15 @@ def index():
 def update():
     print("Updating DB")
     # updating database
-    services.processes.update_database()
-    services.processes.update_database2()
+    #services.processes.update_database()
+    #services.processes.update_database2()
     services.processes. get_govt_data_from_kaggle()
 
     # updating imports
     importlib.reload(services.statewise.statewise_confirmed_recovered_deaths )
-    importlib.reload(services.country_wise_confirmed )
+    importlib.reload(services.country_wise_confirmed_recovered_and_deaths )
     importlib.reload(services.travel_history )
-    importlib.reload(services.country_wise_recovered_and_deaths )
+    #importlib.reload( services.country_wise_confirmed_recovered_and_deaths )
     importlib.reload(services.district_wise.district_all)
 
     return 'Data updated'
@@ -120,8 +120,8 @@ def update():
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
 def day_wise_confirmed():
     graph_data = {
-        'x': services.country_wise_confirmed.diagnosed_date,
-        'y': services.country_wise_confirmed.day_wise_confirmed_overall,
+        'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+        'y': services.country_wise_confirmed_recovered_and_deaths.day_wise_confirmed_overall,
         'type': 'line',
         'title': 'Day wise confirmed cases in India(Cumulative)',
         'x_label': 'Diagnosed Date',
@@ -134,8 +134,8 @@ def day_wise_confirmed():
 @app.route( '/api/day_wise_encountered', methods=['GET'] )
 def day_wise_encountered():
     graph_data = {
-        'x': services.country_wise_confirmed.diagnosed_date,
-        'y': services.country_wise_confirmed.day_wise_encountered,
+        'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+        'y': services.country_wise_confirmed_recovered_and_deaths.day_wise_encountered,
         'type': 'line',
         'title': 'Day wise confirmed cases in India',
         'x_label': 'Diagnosed Date',
@@ -148,8 +148,8 @@ def day_wise_encountered():
 @app.route('/api/day_wise_recovered', methods=['GET'])
 def day_wise_recovered():
     graph_data = {
-        'x': services.country_wise_recovered_and_deaths.dates,
-        'y': services.country_wise_recovered_and_deaths.recovery_daywise,
+        'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+        'y': services.country_wise_confirmed_recovered_and_deaths.recovery_daywise,
         'title':'Recoveries Day wise in india',
         'x_label' : 'Date',
         'y_label': 'recovered',
@@ -161,8 +161,8 @@ def day_wise_recovered():
 @app.route( '/api/day_wise_recovered_cumulative', methods=['GET'] )
 def day_wise_recovered_cumulative():
     graph_data = {
-        'x': services.country_wise_recovered_and_deaths.dates,
-        'y': services.country_wise_recovered_and_deaths.recovery_cumulative,
+        'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+        'y': services.country_wise_confirmed_recovered_and_deaths.recovery_cumulative,
         'title': 'Recovered cases in India(Cumulative)',
         'x_label': 'Date',
         'y_label': 'Total recovered',
@@ -173,8 +173,8 @@ def day_wise_recovered_cumulative():
 @app.route( '/api/day_wise_deaths', methods=['GET'] )
 def day_wise_deaths():
     graph_data = {
-        'x': services.country_wise_recovered_and_deaths.dates,
-        'y': services.country_wise_recovered_and_deaths.death_day_wise,
+        'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+        'y': services.country_wise_confirmed_recovered_and_deaths.death_day_wise,
         'title': 'Deaths Day wise in India',
         'x_label': 'Date',
         'y_label': 'Total Deaths',
@@ -185,8 +185,8 @@ def day_wise_deaths():
 @app.route( '/api/day_wise_deaths_cumulative', methods=['GET'] )
 def day_wise_deaths_cumulative():
     graph_data = {
-        'x': services.country_wise_recovered_and_deaths.dates,
-        'y': services.country_wise_recovered_and_deaths.death_cumulative,
+        'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+        'y': services.country_wise_confirmed_recovered_and_deaths.death_cumulative,
         'title': 'Deaths(Cumulative) wise in India',
         'x_label': 'Date',
         'y_label': 'Total Deaths',
@@ -314,48 +314,48 @@ def get_all_graphs():
     graphs_data = {
         'country_wise': {
             'day_wise_confirmed': {
-                'x': services.country_wise_confirmed.diagnosed_date,
-                'y': services.country_wise_confirmed.day_wise_confirmed_overall,
+                'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+                'y': services.country_wise_confirmed_recovered_and_deaths.day_wise_confirmed_overall,
                 'type': 'line',
                 'title': 'Day wise Total confirmed cases in India(cumulative)',
                 'x_label': 'Diagnosed Date',
                 'y_label': 'Total cases confirmed'
             },
             'day_wise_encountered': {
-                'x': services.country_wise_confirmed.diagnosed_date,
-                'y': services.country_wise_confirmed.day_wise_encountered,
+                'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+                'y': services.country_wise_confirmed_recovered_and_deaths.day_wise_encountered,
                 'type': 'line',
                 'title': 'Day wise confirmed cases in India',
                 'x_label': 'Diagnosed Date',
                 'y_label': 'Total cases confirmed'
             },
             'recovered_cumulative' : {
-                'x': services.country_wise_recovered_and_deaths.dates,
-                'y': services.country_wise_recovered_and_deaths.recovery_cumulative,
+                'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+                'y': services.country_wise_confirmed_recovered_and_deaths.recovery_cumulative,
                 'title': 'Recovered cases in India(Cumulative)',
                 'x_label': 'Date',
                 'y_label': 'Total recovered',
                 'type': 'line'
             },
             'day_wise_recovered' : {
-                'x': services.country_wise_recovered_and_deaths.dates,
-                'y': services.country_wise_recovered_and_deaths.recovery_daywise,
+                'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+                'y': services.country_wise_confirmed_recovered_and_deaths.recovery_daywise,
                 'title': 'Recoveries Day wise in india',
                 'x_label': 'Date',
                 'y_label': 'recovered',
                 'type': 'line'
             },
             'deaths_cumulative' : {
-                'x': services.country_wise_recovered_and_deaths.dates,
-                'y': services.country_wise_recovered_and_deaths.death_cumulative,
+                'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+                'y': services.country_wise_confirmed_recovered_and_deaths.death_cumulative,
                 'title': 'Deaths(Cumulative) wise in India',
                 'x_label': 'Date',
                 'y_label': 'Total Deaths',
                 'type': 'line'
             },
             'day_wise_deaths': {
-                'x': services.country_wise_recovered_and_deaths.dates,
-                'y': services.country_wise_recovered_and_deaths.death_day_wise,
+                'x': services.country_wise_confirmed_recovered_and_deaths.dates,
+                'y': services.country_wise_confirmed_recovered_and_deaths.death_day_wise,
                 'title': 'Deaths(Cumulative) wise in India',
                 'x_label': 'Date',
                 'y_label': 'Total Deaths',
