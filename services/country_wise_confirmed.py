@@ -12,7 +12,7 @@ import json
 from pandas.io.json import json_normalize
 import pandas as pd
 pd.options.mode.chained_assignment = None # Remove warnings
-data = pd.read_csv( file_loc + './data/data.csv' )
+data = pd.read_csv( file_loc + './data/data-copy.csv' )
 confirmed_grouped = data.groupby('Diagnosed date')['Diagnosed date', 'confirmed', 'recovered', 'death'].sum().reset_index()
 c=0
 r=0

@@ -34,6 +34,76 @@ def getDataFromSheet(id, index):
 
     data.drop( data.columns[0], axis='columns', inplace=True )
     return data
+def update_database_merge():
+    print('Fetching and updating 1')
+
+    apiResponse1 = get( 'https://api.covid19india.org/raw_data1.json' )
+    apiResponse2 = get( 'https://api.covid19india.org/raw_data2.json' )
+    apiResponse3 = get( 'https://api.covid19india.org/raw_data3.json' )
+    # print("Processes", apiResponse.status_code)
+
+    #print(apiResponse)
+    if (apiResponse1.status_code == 200):
+        raw_data1 = apiResponse1.json()
+        raw_data2 = apiResponse2.json()
+        raw_data3 = apiResponse3.json()
+        raw_data = raw_data1['raw_data'] + raw_data2['raw_data'] + raw_data3['raw_data']
+        # JSON to dataframe
+        data = json_normalize( raw_data )
+        data = data.rename( columns={"patientnumber": "ID",
+                                     "statepatientnumber": "Government id",
+                                     "dateannounced": "Diagnosed date",
+                                     "agebracket": "Age",
+                                     "gender": "Gender",
+                                     "detectedcity": "Detected city",
+                                     "detecteddistrict": "Detected district",
+                                     "detectedstate": "Detected state",
+                                     "nationality": "Nationality",
+                                     "currentstatus": "Current status",
+                                     "statuschangedate": "Status change date",
+                                     "_d180g": "Notes",
+                                     "backupnotes": "Backup notes",
+                                     "contractedfromwhichpatientsuspected": "Contracted from which Patient (Suspected)",
+                                     "estimatedonsetdate": "Estimated on set date",
+                                     "source1": "Source 1",
+                                     "source2": "Source 2",
+                                     "source3": "Source 3"}
+                            )
+
+        # changing nationality Indian to India
+        for ind in data.index:
+            if (data['Nationality'][ind] == "Indian"):
+                data['Nationality'][ind] = "India"
+
+        # converting the string values to datetime object
+        data['Diagnosed date'] = pd.to_datetime( data['Diagnosed date'], dayfirst=True )
+        data['Status change date'] = pd.to_datetime( data['Status change date'], dayfirst=True )
+
+        # replacing all the missing values with unknown
+        data.replace( to_replace="", value="unknown", inplace=True )
+        # creating new columns depicting the current status of patient
+        data['recovered'] = 0
+        data['active'] = 0
+        data['death'] = 0
+        data['unknown'] = 0
+        data['confirmed'] = 1
+
+        for status in data.index:
+            if (data['Current status'][status] == "Hospitalized"):
+                data['active'][status] = 1
+            elif (data['Current status'][status] == "Recovered"):
+                data['recovered'][status] = 1
+            elif (data['Current status'][status] == "Deceased"):
+                data['death'][status] = 1
+            else:
+                data['unknown'][status] = 1
+
+
+        data.to_csv( file_loc + './data/data-copy.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
+        #print( 'raw data complete' )
+
+    else:
+        print( "Connection error" )
 
 def update_database():
     print('Fetching and updating 1')
@@ -160,4 +230,7 @@ def get_govt_data_from_kaggle():
     source = './complete.csv'
     destination = file_loc + './data/complete.csv'
     shutil.move( source, destination)
-    print('Kaggle data grabbed')
+#update_database()
+#update_database2()
+#get_govt_data_from_kaggle()
+#update_database_merge()
