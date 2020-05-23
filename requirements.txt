@@ -29,6 +29,6 @@ soupsieve==2.0
 text-unidecode==1.3
 tqdm==4.45.0
 tzlocal==2.0.0
-urllib3==1.21.1
+urllib3==1.24.2
 Werkzeug==0.16.0
 zipp==3.1.0

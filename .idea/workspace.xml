@@ -10,7 +10,6 @@
       <change beforePath="$PROJECT_DIR$/services/country_wise_confirmed.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/country_wise_recovered_and_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed_recovered_and_deaths.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
