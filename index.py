@@ -87,10 +87,10 @@ atexit.register( lambda: scheduler.shutdown() )
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
-        date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
-        time = date_time.strftime("%d %B %Y")
-        return time
-        #return o.timestamp()
+        # date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
+        # time = date_time.strftime("%d %B %Y")
+        # return time
+        return o.timestamp()
 
 
 @app.route( '/' )
