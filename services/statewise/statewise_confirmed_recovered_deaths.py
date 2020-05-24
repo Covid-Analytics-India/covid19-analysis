@@ -13,7 +13,11 @@ for row in gov_data.index:
       gov_data['Date'][row] = "2020-04-14"
       c=0
 gov_data['Date'] = pd.to_datetime(gov_data['Date'],dayfirst=True)
-
+#print(gov_data)
+#print(gov_data)
+gov_data = gov_data.replace(['Telengana', 'Dadar Nagar Haveli'] ,['Telangana', 'Dadra and Nagar Haveli'])
+#gov_data = gov_data.replace('Dadar Nagar Haveli','Dadra and Nagar Haveli')
+#print(gov_data['Name of State / UT'])
 confirmed = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Total Confirmed cases', ascending=False)[:33][::-1]
 statewise_confirmed = pd.Series( confirmed['Total Confirmed cases']).tolist()
 statewise_confirmed_names = pd.Series( confirmed['Name of State / UT'] ).tolist()
@@ -35,7 +39,7 @@ state_codes = {
     'Uttarakhand':'UK',
     'Uttar Pradesh':'UP',
     'Tripura':'TR',
-    'Telengana':'TG',
+    'Telangana':'TG',
     'Tamil Nadu':'TN',
     'Sikkim':'SK',
     'Rajasthan':'RJ',
@@ -63,7 +67,7 @@ state_codes = {
     'Bihar':'BR',
     'Assam':'AS',
     'Arunachal Pradesh':'AR',
-    'Andaman and Nicobar Islands':'AN'
+    'Andaman and Nicobar Islands':'AN',
 }
 state_code_list = []
 for state in statewise_confirmed_names:
