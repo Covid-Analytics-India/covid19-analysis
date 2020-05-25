@@ -24,6 +24,8 @@ import services.country_wise_confirmed_recovered_and_deaths
 # noinspection PyUnresolvedReferences
 import services.district_wise.district_all
 
+from services.processes import get_news, news
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
 from flask_cors import CORS
@@ -33,6 +35,7 @@ from werkzeug.contrib.fixers import ProxyFix
 from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask( __name__ )
+
 ### swagger specific ###
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.json'
@@ -84,6 +87,14 @@ atexit.register( lambda: scheduler.shutdown() )
 # t = threading.Thread(target=update)
 # t.start()
 
+'''--------NEWS CONFIG--------'''
+#getting news for the first time
+get_news()
+news_scheduler = BackgroundScheduler()
+news_scheduler.add_job(func=get_news, trigger='cron', hour='09', minute='00')
+news_scheduler.start()
+atexit.register(lambda: news_scheduler.shutdown())
+'''------NEWS CONFIG END-----'''
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
@@ -115,6 +126,10 @@ def update():
 
     return 'Data updated'
 
+
+@app.route('/api/get_news', methods=['GET'])
+def get_all_news():
+    return services.processes.news
 
 
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
