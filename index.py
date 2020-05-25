@@ -91,7 +91,7 @@ atexit.register( lambda: scheduler.shutdown() )
 #getting news for the first time
 get_news()
 news_scheduler = BackgroundScheduler()
-news_scheduler.add_job(func=get_news, trigger='cron', hour='09', minute='00')
+news_scheduler.add_job(func=get_news, trigger='interval', seconds=60 * 15) # news update every 15 mins
 news_scheduler.start()
 atexit.register(lambda: news_scheduler.shutdown())
 '''------NEWS CONFIG END-----'''

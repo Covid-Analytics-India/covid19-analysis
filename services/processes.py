@@ -4,7 +4,7 @@ import shutil
 import os
 import pandas as pd
 from pandas.io.json import json_normalize
-
+import flask
 import json
 #import requests
 
@@ -222,7 +222,11 @@ def Insert_row_(row_number, df, row_value):
 
 
 def get_news():
+    #print(os.environ)
     API_KEY = os.environ.get('NEWS_API_KEY')
+    # print(API_KEY)
+    # from news_api import API_KEY
+    # print(FLASK_ENV)
     link1 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=popularity&apiKey=' + API_KEY
 
     link2 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=publishedAt&apiKey=' + API_KEY
@@ -279,4 +283,4 @@ def get_govt_data_from_kaggle():
 #update_database2()
 #get_govt_data_from_kaggle()
 #update_database_merge()
-#get_news()
+get_news()
