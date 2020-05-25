@@ -222,7 +222,7 @@ def Insert_row_(row_number, df, row_value):
 
 
 def get_news():
-    API_KEY = os.environ['NEW_API_KEY']
+    API_KEY = os.environ['NEWS_API_KEY']
     link1 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=popularity&apiKey=' + API_KEY
 
     link2 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=publishedAt&apiKey=' + API_KEY
