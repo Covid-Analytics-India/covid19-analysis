@@ -4,20 +4,27 @@ import shutil
 import os
 import pandas as pd
 from pandas.io.json import json_normalize
+
+import json
 #import requests
 
 # deploy
 file_loc = ''  # deploy
 from services.fetch import get  # deploy
+# from news_api import API_KEY
 
 '''
 # production
 file_loc = '.' # production
-from fetch import get  # production
+from fetch import get # production
+from news_api import API_KEY # production
 '''
 
 warnings.simplefilter( 'ignore' )
 soup=[]
+news = {}
+
+
 def getDataFromSheet(id, index):
     table = soup.find( id=id ).div.table
     tbody = table.tbody
@@ -34,6 +41,8 @@ def getDataFromSheet(id, index):
 
     data.drop( data.columns[0], axis='columns', inplace=True )
     return data
+
+
 def update_database_merge():
     print('Fetching and updating 1')
 
@@ -105,6 +114,7 @@ def update_database_merge():
     else:
         print( "Connection error" )
 
+
 def update_database():
     print('Fetching and updating 1')
     apiResponse = get( 'https://api.covid19india.org/raw_data.json' )
@@ -171,6 +181,7 @@ def update_database():
     else:
         print( "Connection error" )
 
+
 def update_database2():
     state_district_wise = get( 'https://api.covid19india.org/v2/state_district_wise.json' )
 
@@ -210,6 +221,40 @@ def Insert_row_(row_number, df, row_value):
     return df_result
 
 
+def get_news():
+    API_KEY = os.environ['NEW_API_KEY']
+    link1 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=popularity&apiKey=' + API_KEY
+
+    link2 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=publishedAt&apiKey=' + API_KEY
+
+    link3 = 'https://newsapi.org/v2/everything?language=hi&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=popularity&apiKey=' + API_KEY
+    link4 = 'https://newsapi.org/v2/everything?language=hi&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=publishedAt&apiKey=' + API_KEY
+
+    res1 = get(link1)
+    en_popularity = res1.json()
+
+    res2 = get( link2 )
+    en_published = res2.json()
+
+    res3 = get( link3 )
+    hi_popularity = res3.json()
+
+    res4 = get( link4 )
+    hi_published = res4.json()
+
+    global news
+    news = {
+        'en_popularity' : en_popularity,
+        'en_published' : en_published,
+        'hi_popularity' : hi_popularity,
+        'hi_published' : hi_published
+    }
+
+
+    #print("INSIDE PROCESSES \n")
+    #print(news)
+
+
 def get_govt_data_from_kaggle():
     #os.system('kaggle competitions list')
     try :
@@ -234,3 +279,4 @@ def get_govt_data_from_kaggle():
 #update_database2()
 #get_govt_data_from_kaggle()
 #update_database_merge()
+#get_news()

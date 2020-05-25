@@ -2,15 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="967add93-51c3-45d1-8576-c84098a9d1a1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/covid19-analysis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/covid19-analysis.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/complete.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/complete.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/district_wise.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/district_wise.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/index.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/country_wise_confirmed.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/country_wise_recovered_and_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed_recovered_and_deaths.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/fetch.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,9 +30,18 @@
   <component name="ProjectId" id="1b9j3MDyH9qPhTn7znwvBCFcOAm" />
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/services" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Corona\Web\covid19-analysis" />
+      <recent name="E:\Corona\Web\covid19-analysis\services" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Corona\Web\covid19-analysis\services" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -69,7 +77,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="district_all" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="fetch" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="covid19-analysis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -77,11 +85,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services/district_wise" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/services" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/services/district_wise/district_all.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/services/fetch.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -156,10 +164,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.index" />
+        <item itemvalue="Python.processes" />
+        <item itemvalue="Python.fetch" />
         <item itemvalue="Python.statewise_confirmed_recovered_deaths" />
         <item itemvalue="Python.country_wise_recovered_and_deaths" />
-        <item itemvalue="Python.processes" />
-        <item itemvalue="Python.district_all" />
       </list>
     </recent_temporary>
   </component>
