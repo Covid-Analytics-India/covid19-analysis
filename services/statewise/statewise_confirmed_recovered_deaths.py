@@ -1,10 +1,10 @@
 
 file_loc = ''  # deploy
-#file_loc = '../.' # production
+# file_loc = '../.' # production
 import pandas as pd
 
-gov_data = pd.read_csv(file_loc + './data/complete.csv')
-
+gov_data = pd.read_csv(file_loc + './data/covid_19_india.csv')
+'''
 c = 0
 for row in gov_data.index:
   if gov_data['Date'][row] == '2020-04-13':
@@ -12,21 +12,28 @@ for row in gov_data.index:
     if c == 2:
       gov_data['Date'][row] = "2020-04-14"
       c=0
+      
+'''
 gov_data['Date'] = pd.to_datetime(gov_data['Date'],dayfirst=True)
-#print(gov_data)
-#print(gov_data)
+gov_data = gov_data.rename(columns={"Confirmed": "Total Confirmed cases", 'Cured': "Cured/Discharged/Migrated", "State/UnionTerritory" : "Name of State / UT", "Deaths":"Death"})
+
 gov_data = gov_data.replace(['Telengana', 'Dadar Nagar Haveli'] ,['Telangana', 'Dadra and Nagar Haveli'])
+
 #gov_data = gov_data.replace('Dadar Nagar Haveli','Dadra and Nagar Haveli')
 #print(gov_data['Name of State / UT'])
+
 confirmed = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Total Confirmed cases', ascending=False)[:33][::-1]
+confirmed = confirmed[confirmed['Name of State / UT'] != 'Cases being reassigned to states']
 statewise_confirmed = pd.Series( confirmed['Total Confirmed cases']).tolist()
 statewise_confirmed_names = pd.Series( confirmed['Name of State / UT'] ).tolist()
 
 recovered = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Cured/Discharged/Migrated', ascending=False)[:33][::-1]
+recovered = recovered[recovered['Name of State / UT'] != 'Cases being reassigned to states']
 statewise_recovered_cases = pd.Series(recovered['Cured/Discharged/Migrated']).tolist()
 statewise_recovered_names = pd.Series( recovered['Name of State / UT'] ).tolist()
 
 deaths = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Death', ascending=False)[:33][::-1]
+deaths = deaths[deaths['Name of State / UT'] != 'Cases being reassigned to states']
 statewise_deaths = pd.Series(deaths['Death']).tolist()
 statewise_deaths_names = pd.Series( deaths['Name of State / UT'] ).tolist()
 
