@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="967add93-51c3-45d1-8576-c84098a9d1a1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/covid19-analysis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/covid19-analysis.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/analysis/age_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/analysis/age_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/index.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/country_wise_confirmed_recovered_and_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed_recovered_and_deaths.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +27,7 @@
   <component name="ProjectId" id="1b9j3MDyH9qPhTn7znwvBCFcOAm" />
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/env/Lib/site-packages" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/services" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -51,7 +52,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.age_analysis">
+  <component name="RunManager" selected="Python.index">
     <configuration name="age_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="covid19-analysis" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -159,8 +160,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.age_analysis" />
         <item itemvalue="Python.index" />
+        <item itemvalue="Python.age_analysis" />
         <item itemvalue="Python.gender_analysis" />
         <item itemvalue="Python.processes" />
         <item itemvalue="Python.before_vs_after_lockdown" />
