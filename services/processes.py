@@ -8,12 +8,12 @@ import flask
 import json
 #import requests
 import enum
-from kaggle.api.kaggle_api_extended import KaggleApi
-import zipfile
+# from kaggle.api.kaggle_api_extended import KaggleApi
+# import zipfile
 
 
-api = KaggleApi()
-api.authenticate()
+# api = KaggleApi()
+# api.authenticate()
 
 
 # deploy
@@ -244,7 +244,7 @@ def get_news():
     #print("INSIDE PROCESSES \n")
     #print(news)
 
-
+'''
 def get_govt_data_from_kaggle():
 
     try :
@@ -264,7 +264,7 @@ def get_govt_data_from_kaggle():
     except:
         print("Can't connect to kaggle")
 
-
+'''
 #update_database()
 #update_database2()
 # get_govt_data_from_kaggle()
