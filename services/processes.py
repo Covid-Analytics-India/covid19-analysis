@@ -8,6 +8,7 @@ import flask
 import json
 #import requests
 import enum
+# import zipfile
 
 # deploy
 file_loc = ''  # deploy
@@ -249,7 +250,8 @@ def get_govt_data_from_kaggle():
         # os.system( 'kaggle datasets download -f complete.csv imdevskp/covid19-corona-virus-india-dataset')
         print("File Download")
         # file = 'datasets%2F557629%2F1210473%2Fcovid_19_india.csv'
-        os.system( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
+        #os.system( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
+        os.system( 'kaggle datasets download sudalairajkumar/covid19-in-india ' )
         #os.popen( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
         
     except:
@@ -260,17 +262,22 @@ def get_govt_data_from_kaggle():
     # row_value = ['2020-04-13', 'Meghalaya', 0, 0, 0, 25.4670, 91.3662, 0, 1]
 
     # govt_data = pd.read_csv(file_loc + './data/covid_19_india.csv')
-    os.rename('datasets%2F557629%2F1234650%2Fcovid_19_india.csv', 'covid_19_india.csv')
-    # govt_data.to_csv('complete.csv') #date_format="%Y-%m-%d %H:%M:%S"
-    source = './covid_19_india.csv'
+
+    zip = zipfile.ZipFile( 'covid19-in-india.zip' )
+    zip.extract( 'covid_19_india.csv' )
+    del zip
+    os.remove( 'covid19-in-india.zip' )
+
+    source = 'covid_19_india.csv'
     destination = file_loc + './data/covid_19_india.csv'
-    shutil.move( source, destination)
+    shutil.move( source, destination )
+
     # print('Kaggle')
 
 
 #update_database()
 #update_database2()
-#get_govt_data_from_kaggle()
+# get_govt_data_from_kaggle()
 #update_database_merge()
 #get_news()
 # raw_data_update()
