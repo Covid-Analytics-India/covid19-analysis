@@ -8,13 +8,13 @@ import flask
 import json
 #import requests
 import enum
+
 # from kaggle.api.kaggle_api_extended import KaggleApi
 # import zipfile
 
 
 # api = KaggleApi()
 # api.authenticate()
-
 
 # deploy
 file_loc = ''  # deploy
@@ -24,9 +24,13 @@ from services.fetch import get  # deploy
 # production
 file_loc = '.' # production
 from fetch import get # production
-#from news_api import API_KEY
+from news_api import API_KEY # production
 '''
 
+'''
+from io import StringIO
+# import boto3
+'''
 warnings.simplefilter( 'ignore' )
 soup=[]
 news = {}
@@ -210,7 +214,6 @@ def get_news():
     API_KEY = os.environ.get('NEWS_API_KEY')
     print('Getting news')
     # print(API_KEY)
-    # print(API_KEY)
     # from news_api import API_KEY
     # print(FLASK_ENV)
     link1 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=popularity&apiKey=' + API_KEY
@@ -246,25 +249,22 @@ def get_news():
 
 '''
 def get_govt_data_from_kaggle():
+    #os.system('kaggle competitions list')
+    #data = os.popen( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
+    #print(data.read())
 
     try :
         # os.system( 'kaggle datasets download -f complete.csv imdevskp/covid19-corona-virus-india-dataset')
         print("File Download")
-        api.dataset_download_files( 'sudalairajkumar/covid19-in-india')
-        zip = zipfile.ZipFile('covid19-in-india.zip')
-        zip.extract('covid_19_india.csv')
-        del zip
-        os.remove('covid19-in-india.zip')
-        source = 'covid_19_india.csv'
-        destination = file_loc + './data/covid_19_india.csv'
-        shutil.move( source, destination )
-        #os.system( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
-        
+        # file = 'datasets%2F557629%2F1210473%2Fcovid_19_india.csv'
+        os.system( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
+        #os.popen( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
         
     except:
         print("Can't connect to kaggle")
 
 '''
+
 #update_database()
 #update_database2()
 # get_govt_data_from_kaggle()

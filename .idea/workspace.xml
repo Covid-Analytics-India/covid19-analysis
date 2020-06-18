@@ -24,7 +24,7 @@
   <component name="ProjectId" id="1b9j3MDyH9qPhTn7znwvBCFcOAm" />
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/env/Lib/site-packages" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/services" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -158,6 +158,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.index" />
+        <item itemvalue="Python.age_analysis" />
+        <item itemvalue="Python.gender_analysis" />
         <item itemvalue="Python.processes" />
         <item itemvalue="Python.age_analysis" />
         <item itemvalue="Python.gender_analysis" />
