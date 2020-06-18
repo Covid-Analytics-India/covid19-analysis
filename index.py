@@ -15,9 +15,10 @@ from datetime import datetime
 #import services.processes
 #from services.processes import raw_data_update
 #raw_data_update()
-from pandas.core.common import SettingWithCopyWarning
-warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
+# from pandas.core.common import SettingWithCopyWarning
+# warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 # noinspection PyUnresolvedReferences
+warnings.simplefilter( 'ignore' )
 #import services.country_wise_confirmed
 # noinspection PyUnresolvedReferences
 import services.statewise.statewise_confirmed_recovered_deaths

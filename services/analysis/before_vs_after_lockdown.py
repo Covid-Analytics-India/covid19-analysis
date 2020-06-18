@@ -39,7 +39,7 @@ shapes = [
       "type": 'line',
       "x0": 1588464000,
       "y0": 0,
-      "x1": 1591528967,
+      "x1": 1588464000,
       "y1": int(max(grouped["tot_confirmed"])),
       "line": {
         "color": 'rgb(55, 128, 191)',

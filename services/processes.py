@@ -17,7 +17,7 @@ from services.fetch import get  # deploy
 # production
 file_loc = '.' # production
 from fetch import get # production
-from news_api import API_KEY # production
+# from news_api import API_KEY # production
 '''
 
 '''
@@ -273,4 +273,4 @@ def get_govt_data_from_kaggle():
 #get_govt_data_from_kaggle()
 #update_database_merge()
 #get_news()
-#raw_data_update()
+# raw_data_update()
