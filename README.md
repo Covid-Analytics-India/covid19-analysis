@@ -9,6 +9,13 @@ Flask Backend for COVID-19-React-App.
 3. Ways to flatten the COVID-19 spread and death curves through Analytical Models.
 
 
+## Deploy
+
+- Push to branch `dev`:    [devapi.covidanalyticsindia.now.sh](https://devapi.covidanalyticsindia.now.sh)
+- Push to branch `test`:   [testapi.covidanalyticsindia.now.sh](https://testapi.covidanalyticsindia.now.sh)
+- Push to branch `master`: [api.covidanalytics.live](https://api.covidanalytics.live)
+
+
 ## Setup
 
 ```
