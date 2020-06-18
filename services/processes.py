@@ -208,6 +208,7 @@ def Insert_row_(row_number, df, row_value):
 def get_news():
     #print(os.environ)
     API_KEY = os.environ.get('NEWS_API_KEY')
+    print('Getting news')
     # print(API_KEY)
     # print(API_KEY)
     # from news_api import API_KEY
@@ -239,7 +240,7 @@ def get_news():
         'hi_published' : hi_published
     }
 
-
+    print('News finish')
     #print("INSIDE PROCESSES \n")
     #print(news)
 
@@ -266,7 +267,7 @@ def get_govt_data_from_kaggle():
 
 #update_database()
 #update_database2()
-#get_govt_data_from_kaggle()
+# get_govt_data_from_kaggle()
 #update_database_merge()
 #get_news()
 #raw_data_update()
