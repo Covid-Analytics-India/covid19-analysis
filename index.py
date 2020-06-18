@@ -100,13 +100,12 @@ atexit.register( lambda: scheduler.shutdown() )
 
 # '''--------NEWS CONFIG--------'''
 #getting news for the first time
-'''
+
 get_news()
 news_scheduler = BackgroundScheduler()
 news_scheduler.add_job(func=get_news, trigger='interval', seconds=60 * 15) # news update every 15 mins
 news_scheduler.start()
 atexit.register(lambda: news_scheduler.shutdown())
-'''
 # '''------NEWS CONFIG END-----'''
 
 def myconverter(o):  # datetime to JSON converter
