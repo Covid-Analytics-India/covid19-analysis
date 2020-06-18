@@ -4,6 +4,12 @@
     <list default="true" id="967add93-51c3-45d1-8576-c84098a9d1a1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/index.py" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/services/country_wise_confirmed_recovered_and_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/country_wise_confirmed_recovered_and_deaths.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" afterDir="false" />
+>>>>>>> b6703091c105d842f39e7d8c6e0a83dfebd62819
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -161,8 +167,6 @@
         <item itemvalue="Python.age_analysis" />
         <item itemvalue="Python.gender_analysis" />
         <item itemvalue="Python.processes" />
-        <item itemvalue="Python.age_analysis" />
-        <item itemvalue="Python.gender_analysis" />
         <item itemvalue="Python.before_vs_after_lockdown" />
       </list>
     </recent_temporary>
