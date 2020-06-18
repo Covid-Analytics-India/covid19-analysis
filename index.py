@@ -517,7 +517,43 @@ def get_all_graphs():
             'labels': services.travel_history.pie_data_travel,
             'type': 'pie',
             'title': 'Travel history analysis'
+        },
+        'before_vs_after_lockdown': {
+            'before': {
+                'x': services.analysis.before_vs_after_lockdown.bef_lockdown_dates,
+                'y': services.analysis.before_vs_after_lockdown.bef_lockdown_cases,
+                'title': 'Total Confirmed cases before lockdown',
+                'type': 'line',
+                'x_label': 'Diagnosed Date',
+                'y_label': 'Total confirmed cases'
+            },
+            'after': {
+                'x': services.analysis.before_vs_after_lockdown.after_lockdown_dates,
+                'y': services.analysis.before_vs_after_lockdown.after_lockdown_cases,
+                'title': 'Total Confirmed cases After/During lockdown',
+                'type': 'line',
+                'x_label': 'Diagnosed Date',
+                'y_label': 'Total confirmed cases',
+                'shapes': services.analysis.before_vs_after_lockdown.shapes
+            }
+        },
+        'age_analysis': {
+            'x': services.analysis.age_analysis.age,
+            'type': 'histogram'
+        },
+        'gender_analysis': {
+            'values': services.analysis.gender_analysis.percentage,
+            'labels': services.analysis.gender_analysis.labels,
+            'type': 'pie',
+            'title': 'Gender Analysis'
+        },
+        'gender_age_correlation': {
+            'Male': services.analysis.gender_analysis.M,
+            'Female': services.analysis.gender_analysis.F,
+            'Non-Binary': services.analysis.gender_analysis.NB,
+            'type': "histogram"
         }
+
     }
 
     return json.dumps( graphs_data, default=myconverter )
