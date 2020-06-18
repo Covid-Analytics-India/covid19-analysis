@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="967add93-51c3-45d1-8576-c84098a9d1a1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/raw_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw_data.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/covid_19_india.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/covid_19_india.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/index.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/analysis/before_vs_after_lockdown.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/analysis/before_vs_after_lockdown.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
