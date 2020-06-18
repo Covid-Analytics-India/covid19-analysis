@@ -1,4 +1,5 @@
 import requests
+
 def get(url):
     try:
         response = requests.get(url)

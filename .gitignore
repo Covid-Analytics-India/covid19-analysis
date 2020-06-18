@@ -154,3 +154,5 @@ cython_debug/
 /services/__pycache__/
 
 /.kaggle
+
+/news_api.py

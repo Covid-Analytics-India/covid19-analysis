@@ -12,7 +12,11 @@ from datetime import datetime
 # local module exporting
 # add the below modules to auto reloading function
 # noinspection PyUnresolvedReferences
-import services.processes
+#import services.processes
+#from services.processes import raw_data_update
+#raw_data_update()
+from pandas.core.common import SettingWithCopyWarning
+warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
 # noinspection PyUnresolvedReferences
 #import services.country_wise_confirmed
 # noinspection PyUnresolvedReferences
@@ -23,9 +27,14 @@ import services.travel_history
 import services.country_wise_confirmed_recovered_and_deaths
 # noinspection PyUnresolvedReferences
 import services.district_wise.district_all
+from services.processes import get_news, news
+import services.analysis.before_vs_after_lockdown
+import services.analysis.age_analysis
+import services.analysis.gender_analysis
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
+from flask_cors import CORS
 from flask_cors import CORS
 from flask_restplus import Resource, Api, fields
 from werkzeug.utils import cached_property
@@ -33,6 +42,7 @@ from werkzeug.contrib.fixers import ProxyFix
 from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask( __name__ )
+
 ### swagger specific ###
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.json'
@@ -66,6 +76,7 @@ def update():
     services.processes.update_database()
     services.processes.update_database2()
     services.processes. get_govt_data_from_kaggle()
+    raw_data_update()
 
     # updating imports
     importlib.reload(services.statewise.statewise_confirmed_recovered_deaths )
@@ -73,6 +84,8 @@ def update():
     importlib.reload(services.travel_history )
     importlib.reload(services.country_wise_recovered_and_deaths )
     importlib.reload(services.district_wise.district_all)
+    importlib.reload(services.analysis.before_vs_after_lockdown)
+    importlib.reload(services.analysis.gender_analysis)
 
 
 scheduler = BackgroundScheduler()
@@ -84,6 +97,14 @@ atexit.register( lambda: scheduler.shutdown() )
 # t = threading.Thread(target=update)
 # t.start()
 
+'''--------NEWS CONFIG--------'''
+#getting news for the first time
+get_news()
+news_scheduler = BackgroundScheduler()
+news_scheduler.add_job(func=get_news, trigger='interval', seconds=60 * 15) # news update every 15 mins
+news_scheduler.start()
+atexit.register(lambda: news_scheduler.shutdown())
+'''------NEWS CONFIG END-----'''
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
@@ -104,7 +125,7 @@ def update():
     # updating database
     #services.processes.update_database()
     #services.processes.update_database2()
-    services.processes. get_govt_data_from_kaggle()
+    #services.processes. get_govt_data_from_kaggle()
 
     # updating imports
     importlib.reload(services.statewise.statewise_confirmed_recovered_deaths )
@@ -112,9 +133,15 @@ def update():
     importlib.reload(services.travel_history )
     #importlib.reload( services.country_wise_confirmed_recovered_and_deaths )
     importlib.reload(services.district_wise.district_all)
+    importlib.reload(services.analysis.before_vs_after_lockdown)
+    #raw_data_update()
 
     return 'Data updated'
 
+
+@app.route('/api/get_news', methods=['GET'])
+def get_all_news():
+    return services.processes.news
 
 
 @app.route( '/api/day_wise_confirmed', methods=['GET'] )
@@ -207,7 +234,7 @@ def travel_history_analysis():
     return json.dumps( graph_data )
 
 
-@app.route( '/api/state_wise_confirmed' )
+@app.route( '/api/state_wise_confirmed', methods=['GET'])
 def state_wise_confirmed():
     # horizontal bar-graph
     graph_data = {
@@ -223,7 +250,7 @@ def state_wise_confirmed():
     return json.dumps( graph_data )
 
 
-@app.route('/api/state_wise_recovered')
+@app.route('/api/state_wise_recovered', methods=['GET'])
 def state_wise_recovered():
     graph_data = {
         'x' : services.statewise.statewise_confirmed_recovered_deaths.statewise_recovered_cases,
@@ -238,7 +265,7 @@ def state_wise_recovered():
     return json.dumps(graph_data)
 
 
-@app.route('/api/state_wise_deaths')
+@app.route('/api/state_wise_deaths', methods=['GET'])
 def state_wise_deaths():
     graph_data = {
         'x' : services.statewise.statewise_confirmed_recovered_deaths.statewise_deaths,
@@ -309,7 +336,60 @@ def district_wise_deaths():
     return json.dumps(graph_data)
 
 
-@app.route( '/api/get_all' )
+@app.route('/api/analysis/before_after', methods=['GET'])
+def analysis_before_after():
+    graph_data = {
+        'before' : {
+            'x' : services.analysis.before_vs_after_lockdown.bef_lockdown_dates,
+            'y' : services.analysis.before_vs_after_lockdown.bef_lockdown_cases,
+            'title' : 'Total Confirmed cases before lockdown',
+            'type' : 'line',
+            'x_label' : 'Diagnosed Date',
+            'y_label' : 'Total confirmed cases'
+        },
+        'after' : {
+            'x': services.analysis.before_vs_after_lockdown.after_lockdown_dates,
+            'y': services.analysis.before_vs_after_lockdown.after_lockdown_cases,
+            'title': 'Total Confirmed cases After/During lockdown',
+            'type': 'line',
+            'x_label': 'Diagnosed Date',
+            'y_label': 'Total confirmed cases',
+            'shapes' : services.analysis.before_vs_after_lockdown.shapes
+        }
+    }
+    return json.dumps(graph_data,default=myconverter)
+
+
+@app.route('/api/analysis/age_analysis', methods=['GET'])
+def age_analysis():
+    graph_data = {
+        'x' : services.analysis.age_analysis.age,
+        'type' : 'histogram'
+    }
+    return json.dumps(graph_data)
+
+
+@app.route('/api/analysis/gender_analysis', methods=['GET'])
+def gender_analysis():
+    graph_data = {
+        'values' : services.analysis.gender_analysis.percentage,
+        'labels' : services.analysis.gender_analysis.labels,
+        'type' : 'pie',
+        'title' : 'Gender Analysis'
+    }
+    return json.dumps(graph_data)
+
+
+@app.route('/api/analysis/gender_age_correlation', methods=['GET'])
+def gender_age_correlation():
+    graph_data = {
+        'Male' : services.analysis.gender_analysis.M,
+        'Female': services.analysis.gender_analysis.F,
+        'Non-Binary': services.analysis.gender_analysis.NB,
+        'type' : "histogram"
+    }
+    return json.dumps(graph_data, default=myconverter)
+@app.route( '/api/get_all', methods=['GET'])
 def get_all_graphs():
     graphs_data = {
         'country_wise': {
@@ -442,6 +522,48 @@ def get_all_graphs():
 
     return json.dumps( graphs_data, default=myconverter )
 
+
+@app.route('/api/get_all_analysis', methods=['GET'])
+def get_all_analysis():
+    graph_data = {
+        'before_vs_after_lockdown': {
+            'before': {
+                'x': services.analysis.before_vs_after_lockdown.bef_lockdown_dates,
+                'y': services.analysis.before_vs_after_lockdown.bef_lockdown_cases,
+                'title': 'Total Confirmed cases before lockdown',
+                'type': 'line',
+                'x_label': 'Diagnosed Date',
+                'y_label': 'Total confirmed cases'
+            },
+            'after': {
+                'x': services.analysis.before_vs_after_lockdown.after_lockdown_dates,
+                'y': services.analysis.before_vs_after_lockdown.after_lockdown_cases,
+                'title': 'Total Confirmed cases After/During lockdown',
+                'type': 'line',
+                'x_label': 'Diagnosed Date',
+                'y_label': 'Total confirmed cases',
+                'shapes': services.analysis.before_vs_after_lockdown.shapes
+            }
+        },
+        'age_analysis':{
+            'x' : services.analysis.age_analysis.age,
+            'type' : 'histogram'
+        },
+        'gender_analysis': {
+            'values' : services.analysis.gender_analysis.percentage,
+            'labels' : services.analysis.gender_analysis.labels,
+            'type' : 'pie',
+            'title' : 'Gender Analysis'
+        },
+        'gender_age_correlation' : {
+            'Male' : services.analysis.gender_analysis.M,
+            'Female': services.analysis.gender_analysis.F,
+            'Non-Binary': services.analysis.gender_analysis.NB,
+            'type' : "histogram"
+        }
+
+    }
+    return json.dumps( graph_data, default=myconverter )
 
 if __name__ == "__main__":
     app.run( debug=True )  # for deployment turn it off(False)
