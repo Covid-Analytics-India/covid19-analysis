@@ -9,13 +9,6 @@ import json
 #import requests
 import enum
 
-# from kaggle.api.kaggle_api_extended import KaggleApi
-# import zipfile
-
-
-# api = KaggleApi()
-# api.authenticate()
-
 # deploy
 file_loc = ''  # deploy
 from services.fetch import get  # deploy
@@ -212,7 +205,6 @@ def Insert_row_(row_number, df, row_value):
 def get_news():
     #print(os.environ)
     API_KEY = os.environ.get('NEWS_API_KEY')
-    print('Getting news')
     # print(API_KEY)
     # from news_api import API_KEY
     # print(FLASK_ENV)
@@ -243,11 +235,11 @@ def get_news():
         'hi_published' : hi_published
     }
 
-    print('News finish')
+
     #print("INSIDE PROCESSES \n")
     #print(news)
 
-'''
+
 def get_govt_data_from_kaggle():
     #os.system('kaggle competitions list')
     #data = os.popen( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
@@ -263,11 +255,22 @@ def get_govt_data_from_kaggle():
     except:
         print("Can't connect to kaggle")
 
-'''
+    # Let's create a row which we want to insert
+    #row_number = 930
+    # row_value = ['2020-04-13', 'Meghalaya', 0, 0, 0, 25.4670, 91.3662, 0, 1]
+
+    # govt_data = pd.read_csv(file_loc + './data/covid_19_india.csv')
+    os.rename('datasets%2F557629%2F1234650%2Fcovid_19_india.csv', 'covid_19_india.csv')
+    # govt_data.to_csv('complete.csv') #date_format="%Y-%m-%d %H:%M:%S"
+    source = './covid_19_india.csv'
+    destination = file_loc + './data/covid_19_india.csv'
+    shutil.move( source, destination)
+    # print('Kaggle')
+
 
 #update_database()
 #update_database2()
-# get_govt_data_from_kaggle()
+#get_govt_data_from_kaggle()
 #update_database_merge()
 #get_news()
 #raw_data_update()
