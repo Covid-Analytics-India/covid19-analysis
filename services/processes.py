@@ -58,7 +58,7 @@ def getData(data):
   return data_array
 
 def raw_data_update():
-    print('Fetching and updating 1')
+    print('Fetching and updating raw data')
     #global raw_data
     raw_data = getData( Data.raw_data )
     raw_data[0].rename( columns={'Num cases': 'Num Cases'}, inplace=True )
@@ -74,6 +74,7 @@ def raw_data_update():
     df = df[df['Age Bracket'] != '28-35']
     df = df[df['Age Bracket'] != '8 Months']
     df = df[df['Age Bracket'] != '6 Months']
+    df = df[df['Age Bracket'] != '5 months']
     # print(type(df))
     df.to_csv( file_loc + './data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
 
@@ -82,6 +83,7 @@ def death_and_recovery_update():
 
 
 def district_wise():
+    print('Updating district wise')
     state_district_wise = get( 'https://api.covid19india.org/v2/state_district_wise.json' )
 
     df = pd.DataFrame( columns=['district', 'notes', 'active', 'confirmed', 'deceased', 'recovered', 'delta.confirmed',
@@ -101,9 +103,10 @@ def district_wise():
 
     df.to_csv( file_loc + './data/district_wise.csv', index=False, date_format="%Y-%m-%d %H:%M:%S" )
 
-# district_wise()
+
 
 def testing_data():
+    print('Updatind testing data')
     testing_data = get( 'https://api.covid19india.org/state_test_data.json' )
     testing_data = testing_data.json()
     testing_data = json_normalize(testing_data)
@@ -177,9 +180,16 @@ def get_govt_data_from_kaggle():
     # print('Kaggle')
 
 
+def manipulate_raw_data():
+    df = pd.read_csv(file_loc + './data/raw_data.csv')
+    df = df[df['Age Bracket'] != '5 months']
+    df.to_csv( file_loc + './data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
 
-#get_govt_data_from_kaggle()
+
+# get_govt_data_from_kaggle()
 #get_news()
-#raw_data_update()
-#district_wise()
-#testing_data()
+# raw_data_update()
+# district_wise()
+# testing_data()
+
+# manipulate_raw_data()

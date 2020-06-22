@@ -26,6 +26,7 @@ import services.analysis.before_vs_after_lockdown
 import services.analysis.age_analysis
 import services.analysis.gender_analysis
 import services.analysis.testing_analysis
+import services.analysis.rates
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
@@ -388,6 +389,32 @@ def gender_age_correlation():
     return json.dumps(graph_data, default=myconverter)
 
 
+@app.route('/api/analysis/rates', methods=['GET'])
+def rates():
+    graph_data = {
+        'mortality_rate':{
+            'x' : services.analysis.rates.mortality_rate,
+            'y' : services.analysis.rates.name_of_state_mr,
+            'type' : 'bar',
+            'orientation' : 'h',
+            'title' : 'Deaths per 10 Confirmed Cases',
+            'x_label' : 'Mortality rate',
+            'y_label' : 'Name of State / UT'
+        },
+        'recovery_rate' : {
+            'x' : services.analysis.rates.recovery_rate,
+            'y' : services.analysis.rates.name_of_state_rr,
+            'type' : 'bar',
+            'orientation' : 'h',
+            'title' : 'Recovery per 10 Confirmed Cases',
+            'x_label' : 'Recovery rate',
+            'y_label' : 'Name of State / UT'
+        }
+    }
+
+    return json.dumps(graph_data)
+
+
 @app.route('/api/analysis/testing_analysis', methods=['GET'])
 def testing_analysis():
     graph_data = {
@@ -572,6 +599,26 @@ def get_all_graphs():
             'title' : 'Testing analysis',
             'x_label' : 'Date',
             'y_label' : 'Total test'
+        },
+        'rates' : {
+            'mortality_rate':{
+                'x' : services.analysis.rates.mortality_rate,
+                'y' : services.analysis.rates.name_of_state_mr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Deaths per 10 Confirmed Cases',
+                'x_label' : 'Mortality rate',
+                'y_label' : 'Name of State / UT'
+            },
+            'recovery_rate' : {
+                'x' : services.analysis.rates.recovery_rate,
+                'y' : services.analysis.rates.name_of_state_rr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Recovery per 10 Confirmed Cases',
+                'x_label' : 'Recovery rate',
+                'y_label' : 'Name of State / UT'
+            }
         }
     }
 
@@ -586,7 +633,7 @@ def get_all_analysis():
                 'x': services.analysis.before_vs_after_lockdown.bef_lockdown_dates,
                 'y': services.analysis.before_vs_after_lockdown.bef_lockdown_cases,
                 'title': 'Total Confirmed cases before lockdown',
-                'type': 'line',
+                'type': 'bar',
                 'x_label': 'Diagnosed Date',
                 'y_label': 'Total confirmed cases'
             },
@@ -623,6 +670,26 @@ def get_all_analysis():
             'title': 'Testing analysis',
             'x_label': 'Date',
             'y_label': 'Total test'
+        },
+        'rates' : {
+            'mortality_rate':{
+                'x' : services.analysis.rates.mortality_rate,
+                'y' : services.analysis.rates.name_of_state_mr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Deaths per 10 Confirmed Cases',
+                'x_label' : 'Mortality rate',
+                'y_label' : 'Name of State / UT'
+            },
+            'recovery_rate' : {
+                'x' : services.analysis.rates.recovery_rate,
+                'y' : services.analysis.rates.name_of_state_rr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Recovery per 10 Confirmed Cases',
+                'x_label' : 'Recovery rate',
+                'y_label' : 'Name of State / UT'
+            }
         }
 
     }

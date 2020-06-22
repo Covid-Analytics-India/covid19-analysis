@@ -1,4 +1,4 @@
-# from services.processes import raw_data
+
 import pandas as pd
 file_loc = ''  # development
 # file_loc = '../.' # build
@@ -11,6 +11,7 @@ raw_data = getData(Data.raw_data)
 # -------------
 '''
 raw_data = pd.read_csv(file_loc + './data/raw_data.csv', dtype=object)
+
 clean_age = {'Age' : raw_data['Age Bracket']}
 clean_age = pd.DataFrame(clean_age)
 
