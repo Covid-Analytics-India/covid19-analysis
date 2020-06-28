@@ -106,7 +106,7 @@ def district_wise():
 
 
 def testing_data():
-    print('Updatind testing data')
+    print('Updating testing data')
     testing_data = get( 'https://api.covid19india.org/state_test_data.json' )
     testing_data = testing_data.json()
     testing_data = json_normalize(testing_data)
@@ -182,7 +182,13 @@ def get_govt_data_from_kaggle():
 
 def manipulate_raw_data():
     df = pd.read_csv(file_loc + './data/raw_data.csv')
+    df = df[df['Age Bracket'] != '8 Months']
+    df = df[df['Age Bracket'] != '28-35']
+    df = df[df['Age Bracket'] != '6 Months']
+    df = df[df['Age Bracket'] != '5 Months']
     df = df[df['Age Bracket'] != '5 months']
+    df = df[df['Age Bracket'] != '9 Months']
+
     df.to_csv( file_loc + './data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
 
 

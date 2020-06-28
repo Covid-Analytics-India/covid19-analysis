@@ -6,13 +6,8 @@
       <change beforePath="$PROJECT_DIR$/data/covid_19_india.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/covid_19_india.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/district_wise.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/district_wise.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/raw_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/index.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/analysis/before_vs_after_lockdown.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/analysis/before_vs_after_lockdown.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/country_wise_confirmed.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/district_wise/district_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/district_wise/district_all.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/testing_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/testing_data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/statewise/statewise_confirmed_recovered_deaths.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/travel_history.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel_history.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
