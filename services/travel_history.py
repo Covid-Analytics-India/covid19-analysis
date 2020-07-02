@@ -1,10 +1,19 @@
 # from processes import data  # production
 #from services.processes import data  # deploy
-#file_loc = '.' # production
+# file_loc = '.' # production
 file_loc = '' # deploy
 import pandas as pd
-data = pd.read_csv(file_loc + './data/data.csv')
-notes_cleaned = data[data["notes"].str.contains("Travelled", na=False)]
+raw_data = pd.read_csv(file_loc + './data/raw_data.csv')
+
+raw_data.rename(columns={'Num cases':'Num Cases'}, inplace=True)
+
+clean_notes = {'notes' : raw_data['Notes'], 'confirmed' : raw_data['Num Cases']}
+# print(clean_notes)
+
+clean_notes = pd.DataFrame(clean_notes)
+# print(clean_notes)
+
+notes_cleaned = clean_notes[clean_notes["notes"].str.contains("Travelled", na=False)]
 v = notes_cleaned[['notes']]
 notes_cleaned = notes_cleaned[v.replace(v.stack().value_counts()).gt(5).all(1)]
 
@@ -66,3 +75,6 @@ pie_data['per'][pie_data['travel'] == ('Travelled from Iran, Resident of Ladakh(
 
 pie_data_percentage = pd.Series( pie_data['per'] ).tolist(),
 pie_data_travel = pd.Series( pie_data['travel'] ).tolist(),
+
+#print(pie_data_travel)
+#print(pie_data_percentage)

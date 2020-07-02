@@ -1,9 +1,10 @@
 import pandas as pd
 
 file_loc = ''  # deploy
-#file_loc = '../.'  # production
+# file_loc = '../.'  # production
 
 df = pd.read_csv( file_loc + './data/district_wise.csv' )
+#gov_data = pd.read_csv(file_loc + './data/covid_19_india.csv')
 # all graphs with 'h' orientation
 
 # Most affected district confirmed
@@ -29,3 +30,5 @@ latest_grouped = df.groupby('district')['recovered'].sum().reset_index()
 recovery = latest_grouped.sort_values('recovered', ascending=False)[:20][::-1]
 district_recovered = pd.Series( recovery['recovered'] ).tolist()
 district_recovered_names = pd.Series( recovery['district'] ).tolist()
+
+# print(confirmed)

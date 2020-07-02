@@ -8,23 +8,19 @@ import flask
 import json
 #import requests
 import enum
-# import zipfile
+import zipfile
 
-# deploy
+# development
 file_loc = ''  # deploy
 from services.fetch import get  # deploy
 # from news_api import API_KEY
 '''
-# production
+# build
 file_loc = '.' # production
 from fetch import get # production
 # from news_api import API_KEY # production
 '''
 
-'''
-from io import StringIO
-# import boto3
-'''
 warnings.simplefilter( 'ignore' )
 soup=[]
 news = {}
@@ -61,28 +57,12 @@ def getData(data):
       break
   return data_array
 
-def getDataFromSheet(id, index):
-    table = soup.find( id=id ).div.table
-    tbody = table.tbody
-    body = tbody.find_all( 'tr' )
-
-    body_rows = []
-
-    for tr in body:
-        td = tr.find_all( ['th', 'td'] )
-        row = [i.text for i in td]
-        body_rows.append( row )
-
-    data = pd.DataFrame( body_rows[index:len( body_rows )], columns=body_rows[0] )
-
-    data.drop( data.columns[0], axis='columns', inplace=True )
-    return data
-
-
 def raw_data_update():
-    print('Fetching and updating 1')
+    print('Fetching and updating raw data')
     #global raw_data
     raw_data = getData( Data.raw_data )
+    raw_data[0].rename( columns={'Num cases': 'Num Cases'}, inplace=True )
+    raw_data[1].rename( columns={'Num cases': 'Num Cases'}, inplace=True )
 
     df = pd.DataFrame()
 
@@ -90,118 +70,59 @@ def raw_data_update():
     for data in raw_data:
         df = df.append(data, ignore_index=True)
 
+
+    df = df[df['Age Bracket'] != '28-35']
+    df = df[df['Age Bracket'] != '8 Months']
+    df = df[df['Age Bracket'] != '6 Months']
+    df = df[df['Age Bracket'] != '5 months']
     # print(type(df))
     df.to_csv( file_loc + './data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
-# raw_data_update()
+
 def death_and_recovery_update():
     death_and_recovered = getData( Data.death_and_recovered )
 
 
-def update_database():
-    print('Fetching and updating 1')
-    apiResponse = get( 'https://api.covid19india.org/raw_data.json' )
-    # print("Processes", apiResponse.status_code)
-
-    #print(apiResponse)
-    if (apiResponse.status_code == 200):
-        raw_data = apiResponse.json()
-        raw_data = raw_data['raw_data']
-        # JSON to dataframe
-        data = json_normalize( raw_data )
-        data = data.rename( columns={"patientnumber": "ID",
-                                     "statepatientnumber": "Government id",
-                                     "dateannounced": "Diagnosed date",
-                                     "agebracket": "Age",
-                                     "gender": "Gender",
-                                     "detectedcity": "Detected city",
-                                     "detecteddistrict": "Detected district",
-                                     "detectedstate": "Detected state",
-                                     "nationality": "Nationality",
-                                     "currentstatus": "Current status",
-                                     "statuschangedate": "Status change date",
-                                     "_d180g": "Notes",
-                                     "backupnotes": "Backup notes",
-                                     "contractedfromwhichpatientsuspected": "Contracted from which Patient (Suspected)",
-                                     "estimatedonsetdate": "Estimated on set date",
-                                     "source1": "Source 1",
-                                     "source2": "Source 2",
-                                     "source3": "Source 3"}
-                            )
-
-        # changing nationality Indian to India
-        for ind in data.index:
-            if (data['Nationality'][ind] == "Indian"):
-                data['Nationality'][ind] = "India"
-
-        # converting the string values to datetime object
-        data['Diagnosed date'] = pd.to_datetime( data['Diagnosed date'], dayfirst=True )
-        data['Status change date'] = pd.to_datetime( data['Status change date'], dayfirst=True )
-
-        # replacing all the missing values with unknown
-        data.replace( to_replace="", value="unknown", inplace=True )
-        # creating new columns depicting the current status of patient
-        data['recovered'] = 0
-        data['active'] = 0
-        data['death'] = 0
-        data['unknown'] = 0
-        data['confirmed'] = 1
-
-        for status in data.index:
-            if (data['Current status'][status] == "Hospitalized"):
-                data['active'][status] = 1
-            elif (data['Current status'][status] == "Recovered"):
-                data['recovered'][status] = 1
-            elif (data['Current status'][status] == "Deceased"):
-                data['death'][status] = 1
-            else:
-                data['unknown'][status] = 1
-
-
-        data.to_csv( file_loc + './data/data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
-        #print( 'raw data complete' )
-
-    else:
-        print( "Connection error" )
-
-
-def update_database2():
+def district_wise():
+    print('Updating district wise')
     state_district_wise = get( 'https://api.covid19india.org/v2/state_district_wise.json' )
 
     df = pd.DataFrame( columns=['district', 'notes', 'active', 'confirmed', 'deceased', 'recovered', 'delta.confirmed',
                                 'delta.deceased', 'delta.recovered'] )
-
     state_district_wise = state_district_wise.json()
-    #print(state_district_wise)
-    #print(json_normalize(state_district_wise.to_dict()))
+
     for row in state_district_wise:
         state_district_wise = row
-        data = json_normalize( state_district_wise)
+        data = json_normalize( state_district_wise )
         state = json_normalize( data['districtData'][0] )
         df = df.append( state )
+
     df = df[["district", "active", "confirmed", "deceased", "recovered"]]
     df = df[df.district != "Unknown"]
+
+    # latest_grouped = df.groupby( 'district' )['confirmed'].sum().reset_index()
+
     df.to_csv( file_loc + './data/district_wise.csv', index=False, date_format="%Y-%m-%d %H:%M:%S" )
 
 
-def Insert_row_(row_number, df, row_value):
-    # Slice the upper half of the dataframe
-    df1 = df[0:row_number]
 
-    # Store the result of lower half of the dataframe
-    df2 = df[row_number:]
+def testing_data():
+    print('Updating testing data')
+    testing_data = get( 'https://api.covid19india.org/state_test_data.json' )
+    testing_data = testing_data.json()
+    testing_data = json_normalize(testing_data)
+    testing_data = pd.DataFrame.from_dict( testing_data['states_tested_data'][0] )
+    testing_data = testing_data[testing_data['updatedon'] != '']
 
-    # Inser the row in the upper half dataframe
-    df1.loc[row_number] = row_value
+    testing_data['updatedon'] = pd.to_datetime( testing_data['updatedon'], format='%d/%m/%Y' )
+    testing_data = testing_data[testing_data['totaltested'] != '14/04/2020']
+    testing_data.replace( to_replace="", value="0", inplace=True )  ######VERY CRUCIAL, WITHOUT THIS CODE BREAKS, IDK WHY THOUGH {TOOK 30 MIN TO FIND}
 
-    # Concat the two dataframes
-    df_result = pd.concat( [df1, df2] )
+    grouped_testing_data = testing_data
+    grouped_testing_data = grouped_testing_data.sort_values( ['totaltested'], ascending=False )
+    grouped_testing_data = grouped_testing_data.groupby( 'updatedon' )['totaltested', 'positive', 'negative', 'unconfirmed'].sum().reset_index()
+    grouped_testing_data.to_csv( file_loc + './data/testing_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S" )
 
-    # Reassign the index labels
-    df_result.index = [*range( df_result.shape[0] )]
-
-    # Return the updated dataframe
-    return df_result
-
+# testing_data()
 
 def get_news():
     #print(os.environ)
@@ -210,9 +131,7 @@ def get_news():
     # from news_api import API_KEY
     # print(FLASK_ENV)
     link1 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=popularity&apiKey=' + API_KEY
-
     link2 = 'https://newsapi.org/v2/everything?language=en&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=publishedAt&apiKey=' + API_KEY
-
     link3 = 'https://newsapi.org/v2/everything?language=hi&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=popularity&apiKey=' + API_KEY
     link4 = 'https://newsapi.org/v2/everything?language=hi&q=india+corona+covid+covid+19+Covid-19+Coronavirus&sortBy=publishedAt&apiKey=' + API_KEY
 
@@ -242,26 +161,12 @@ def get_news():
 
 
 def get_govt_data_from_kaggle():
-    #os.system('kaggle competitions list')
-    #data = os.popen( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
-    #print(data.read())
-
     try :
-        # os.system( 'kaggle datasets download -f complete.csv imdevskp/covid19-corona-virus-india-dataset')
-        print("File Download")
-        # file = 'datasets%2F557629%2F1210473%2Fcovid_19_india.csv'
-        #os.system( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
+        print("File Download Kaggle")
         os.system( 'kaggle datasets download sudalairajkumar/covid19-in-india ' )
-        #os.popen( 'kaggle datasets download -f covid_19_india.csv sudalairajkumar/covid19-in-india --force' )
-        
+
     except:
         print("Can't connect to kaggle")
-
-    # Let's create a row which we want to insert
-    #row_number = 930
-    # row_value = ['2020-04-13', 'Meghalaya', 0, 0, 0, 25.4670, 91.3662, 0, 1]
-
-    # govt_data = pd.read_csv(file_loc + './data/covid_19_india.csv')
 
     zip = zipfile.ZipFile( 'covid19-in-india.zip' )
     zip.extract( 'covid_19_india.csv' )
@@ -275,9 +180,22 @@ def get_govt_data_from_kaggle():
     # print('Kaggle')
 
 
-#update_database()
-#update_database2()
+def manipulate_raw_data():
+    df = pd.read_csv(file_loc + './data/raw_data.csv')
+    df = df[df['Age Bracket'] != '8 Months']
+    df = df[df['Age Bracket'] != '28-35']
+    df = df[df['Age Bracket'] != '6 Months']
+    df = df[df['Age Bracket'] != '5 Months']
+    df = df[df['Age Bracket'] != '5 months']
+    df = df[df['Age Bracket'] != '9 Months']
+
+    df.to_csv( file_loc + './data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
+
+
 # get_govt_data_from_kaggle()
-#update_database_merge()
 #get_news()
 # raw_data_update()
+# district_wise()
+# testing_data()
+
+# manipulate_raw_data()

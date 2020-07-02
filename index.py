@@ -11,13 +11,6 @@ from datetime import datetime
 
 # local module exporting
 # add the below modules to auto reloading function
-# noinspection PyUnresolvedReferences
-#import services.processes
-#from services.processes import raw_data_update
-#raw_data_update()
-# from pandas.core.common import SettingWithCopyWarning
-# warnings.simplefilter(action="ignore", category=SettingWithCopyWarning)
-# noinspection PyUnresolvedReferences
 warnings.simplefilter( 'ignore' )
 #import services.country_wise_confirmed
 # noinspection PyUnresolvedReferences
@@ -32,6 +25,8 @@ from services.processes import get_news, news
 import services.analysis.before_vs_after_lockdown
 import services.analysis.age_analysis
 import services.analysis.gender_analysis
+import services.analysis.testing_analysis
+import services.analysis.rates
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
@@ -99,13 +94,14 @@ atexit.register( lambda: scheduler.shutdown() )
 # t.start()
 
 # '''--------NEWS CONFIG--------'''
-#getting news for the first time
+# getting news for the first time
 
 get_news()
 news_scheduler = BackgroundScheduler()
 news_scheduler.add_job(func=get_news, trigger='interval', seconds=60 * 15) # news update every 15 mins
 news_scheduler.start()
 atexit.register(lambda: news_scheduler.shutdown())
+
 # '''------NEWS CONFIG END-----'''
 
 def myconverter(o):  # datetime to JSON converter
@@ -344,7 +340,7 @@ def analysis_before_after():
         'before' : {
             'x' : services.analysis.before_vs_after_lockdown.bef_lockdown_dates,
             'y' : services.analysis.before_vs_after_lockdown.bef_lockdown_cases,
-            'title' : 'Total Confirmed cases before lockdown',
+            'title' : 'Active Confirmed cases before lockdown',
             'type' : 'line',
             'x_label' : 'Diagnosed Date',
             'y_label' : 'Total confirmed cases'
@@ -352,7 +348,7 @@ def analysis_before_after():
         'after' : {
             'x': services.analysis.before_vs_after_lockdown.after_lockdown_dates,
             'y': services.analysis.before_vs_after_lockdown.after_lockdown_cases,
-            'title': 'Total Confirmed cases After/During lockdown',
+            'title': 'Active Confirmed cases After/During lockdown',
             'type': 'line',
             'x_label': 'Diagnosed Date',
             'y_label': 'Total confirmed cases',
@@ -391,6 +387,47 @@ def gender_age_correlation():
         'type' : "histogram"
     }
     return json.dumps(graph_data, default=myconverter)
+
+
+@app.route('/api/analysis/rates', methods=['GET'])
+def rates():
+    graph_data = {
+        'mortality_rate':{
+            'x' : services.analysis.rates.mortality_rate,
+            'y' : services.analysis.rates.name_of_state_mr,
+            'type' : 'bar',
+            'orientation' : 'h',
+            'title' : 'Deaths per 10 Confirmed Cases',
+            'x_label' : 'Mortality rate',
+            'y_label' : 'Name of State / UT'
+        },
+        'recovery_rate' : {
+            'x' : services.analysis.rates.recovery_rate,
+            'y' : services.analysis.rates.name_of_state_rr,
+            'type' : 'bar',
+            'orientation' : 'h',
+            'title' : 'Recovery per 10 Confirmed Cases',
+            'x_label' : 'Recovery rate',
+            'y_label' : 'Name of State / UT'
+        }
+    }
+
+    return json.dumps(graph_data)
+
+
+@app.route('/api/analysis/testing_analysis', methods=['GET'])
+def testing_analysis():
+    graph_data = {
+        'x' : services.analysis.testing_analysis.dates,
+        'y' : services.analysis.testing_analysis.total_test,
+        'type' : 'bar',
+        'title' : 'Testing analysis',
+        'x_label' : 'Date',
+        'y_label' : 'Total test'
+    }
+
+    return json.dumps(graph_data, default=myconverter)
+
 @app.route( '/api/get_all', methods=['GET'])
 def get_all_graphs():
     graphs_data = {
@@ -524,18 +561,18 @@ def get_all_graphs():
             'before': {
                 'x': services.analysis.before_vs_after_lockdown.bef_lockdown_dates,
                 'y': services.analysis.before_vs_after_lockdown.bef_lockdown_cases,
-                'title': 'Total Confirmed cases before lockdown',
-                'type': 'line',
+                'title': 'Active Confirmed cases before lockdown',
+                'type': 'bar',
                 'x_label': 'Diagnosed Date',
-                'y_label': 'Total confirmed cases'
+                'y_label': 'Total active cases'
             },
             'after': {
                 'x': services.analysis.before_vs_after_lockdown.after_lockdown_dates,
                 'y': services.analysis.before_vs_after_lockdown.after_lockdown_cases,
-                'title': 'Total Confirmed cases After/During lockdown',
-                'type': 'line',
+                'title': 'Active Confirmed cases After/During lockdown',
+                'type': 'bar',
                 'x_label': 'Diagnosed Date',
-                'y_label': 'Total confirmed cases',
+                'y_label': 'Total active cases',
                 'shapes': services.analysis.before_vs_after_lockdown.shapes
             }
         },
@@ -554,6 +591,34 @@ def get_all_graphs():
             'Female': services.analysis.gender_analysis.F,
             'Non-Binary': services.analysis.gender_analysis.NB,
             'type': "histogram"
+        },
+        'testing_analysis' : {
+            'x' : services.analysis.testing_analysis.dates,
+            'y' : services.analysis.testing_analysis.total_test,
+            'type' : 'bar',
+            'title' : 'Testing analysis',
+            'x_label' : 'Date',
+            'y_label' : 'Total test'
+        },
+        'rates' : {
+            'mortality_rate':{
+                'x' : services.analysis.rates.mortality_rate,
+                'y' : services.analysis.rates.name_of_state_mr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Deaths per 10 Confirmed Cases',
+                'x_label' : 'Mortality rate',
+                'y_label' : 'Name of State / UT'
+            },
+            'recovery_rate' : {
+                'x' : services.analysis.rates.recovery_rate,
+                'y' : services.analysis.rates.name_of_state_rr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Recovery per 10 Confirmed Cases',
+                'x_label' : 'Recovery rate',
+                'y_label' : 'Name of State / UT'
+            }
         }
     }
 
@@ -568,7 +633,7 @@ def get_all_analysis():
                 'x': services.analysis.before_vs_after_lockdown.bef_lockdown_dates,
                 'y': services.analysis.before_vs_after_lockdown.bef_lockdown_cases,
                 'title': 'Total Confirmed cases before lockdown',
-                'type': 'line',
+                'type': 'bar',
                 'x_label': 'Diagnosed Date',
                 'y_label': 'Total confirmed cases'
             },
@@ -597,6 +662,34 @@ def get_all_analysis():
             'Female': services.analysis.gender_analysis.F,
             'Non-Binary': services.analysis.gender_analysis.NB,
             'type' : "histogram"
+        },
+        'testing_analysis': {
+            'x': services.analysis.testing_analysis.dates,
+            'y': services.analysis.testing_analysis.total_test,
+            'type': 'bar',
+            'title': 'Testing analysis',
+            'x_label': 'Date',
+            'y_label': 'Total test'
+        },
+        'rates' : {
+            'mortality_rate':{
+                'x' : services.analysis.rates.mortality_rate,
+                'y' : services.analysis.rates.name_of_state_mr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Deaths per 10 Confirmed Cases',
+                'x_label' : 'Mortality rate',
+                'y_label' : 'Name of State / UT'
+            },
+            'recovery_rate' : {
+                'x' : services.analysis.rates.recovery_rate,
+                'y' : services.analysis.rates.name_of_state_rr,
+                'type' : 'bar',
+                'orientation' : 'h',
+                'title' : 'Recovery per 10 Confirmed Cases',
+                'x_label' : 'Recovery rate',
+                'y_label' : 'Name of State / UT'
+            }
         }
 
     }

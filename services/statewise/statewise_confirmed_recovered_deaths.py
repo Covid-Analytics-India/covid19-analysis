@@ -22,17 +22,17 @@ gov_data = gov_data.replace(['Telengana', 'Dadar Nagar Haveli'] ,['Telangana', '
 #gov_data = gov_data.replace('Dadar Nagar Haveli','Dadra and Nagar Haveli')
 #print(gov_data['Name of State / UT'])
 
-confirmed = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Total Confirmed cases', ascending=False)[:33][::-1]
+confirmed = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Total Confirmed cases', ascending=False)[:36][::-1]
 confirmed = confirmed[confirmed['Name of State / UT'] != 'Cases being reassigned to states']
 statewise_confirmed = pd.Series( confirmed['Total Confirmed cases']).tolist()
 statewise_confirmed_names = pd.Series( confirmed['Name of State / UT'] ).tolist()
 
-recovered = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Cured/Discharged/Migrated', ascending=False)[:33][::-1]
+recovered = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Cured/Discharged/Migrated', ascending=False)[:36][::-1]
 recovered = recovered[recovered['Name of State / UT'] != 'Cases being reassigned to states']
 statewise_recovered_cases = pd.Series(recovered['Cured/Discharged/Migrated']).tolist()
 statewise_recovered_names = pd.Series( recovered['Name of State / UT'] ).tolist()
 
-deaths = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Death', ascending=False)[:33][::-1]
+deaths = gov_data[-gov_data[gov_data['Date'] == gov_data['Date'].max()].shape[0]:].sort_values('Death', ascending=False)[:36][::-1]
 deaths = deaths[deaths['Name of State / UT'] != 'Cases being reassigned to states']
 statewise_deaths = pd.Series(deaths['Death']).tolist()
 statewise_deaths_names = pd.Series( deaths['Name of State / UT'] ).tolist()
@@ -75,7 +75,10 @@ state_codes = {
     'Assam':'AS',
     'Arunachal Pradesh':'AR',
     'Andaman and Nicobar Islands':'AN',
+    'Dadra and Nagar Haveli and Daman and Diu' : 'DN'
 }
+
+# print(statewise_confirmed_names)
 state_code_list = []
 for state in statewise_confirmed_names:
     state_code_list.append(state_codes[state])
