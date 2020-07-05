@@ -1,5 +1,6 @@
 
 import pandas as pd
+import numpy as np
 file_loc = ''  # development
 # file_loc = '../.' # build
 
@@ -16,14 +17,22 @@ clean_age = {'Age' : raw_data['Age Bracket']}
 clean_age = pd.DataFrame(clean_age)
 
 clean_age = pd.DataFrame(clean_age)
-'''
-clean_age = clean_age[clean_age['Age'] != '28-35' ]
-clean_age = clean_age[clean_age['Age'] != '8 Months']
-clean_age = clean_age[clean_age['Age'] != '6 Months']
-'''
-clean_age['Age'] = clean_age['Age'].astype(float)
-clean_age['Age'].dropna(inplace=True)
+num = []
+for i in range(0,111):
+  i = str(i)
+  num.append(i)
+  clean = []
+
+for age in clean_age['Age']:
+  if age in num:
+    clean.append(age)
+
+cl = {'Age' : clean}
+cl = pd.DataFrame(cl)
+cl['Age'] = cl['Age'].astype(float)
+cl['Age'].dropna(inplace=True)
+cl['Age'] = np.floor(cl['Age'])
 
 
-age = pd.Series(clean_age['Age']).to_list()
+age = pd.Series(cl['Age']).to_list()
 # print(age)

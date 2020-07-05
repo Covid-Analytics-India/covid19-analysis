@@ -60,7 +60,6 @@ clean = {'Gender' : df['Gender'],'Age' : df['Age Bracket']}
 # print(clean)
 clean = pd.DataFrame(clean)
 clean.dropna(inplace=True)
-clean = clean[clean['Age'] != '28-35']
 clean['Age'] = clean['Age'].astype(float)
 clean['Age'] = np.floor(clean['Age'])
 clean['Gender'] = clean['Gender'].str.replace('M ','M')
