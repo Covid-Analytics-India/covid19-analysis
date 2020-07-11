@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="967add93-51c3-45d1-8576-c84098a9d1a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/covid_19_india.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/covid_19_india.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/district_wise.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/district_wise.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/raw_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw_data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/testing_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/testing_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/analysis/age_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/analysis/age_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/analysis/gender_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/analysis/gender_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/processes.py" beforeDir="false" afterPath="$PROJECT_DIR$/services/processes.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +76,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="before_vs_after_lockdown" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="gender_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="covid19-analysis" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -91,7 +88,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/services/analysis/before_vs_after_lockdown.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/services/analysis/gender_analysis.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -166,10 +163,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.index" />
+        <item itemvalue="Python.gender_analysis" />
         <item itemvalue="Python.processes" />
         <item itemvalue="Python.age_analysis" />
         <item itemvalue="Python.testing_analysis" />
-        <item itemvalue="Python.before_vs_after_lockdown" />
       </list>
     </recent_temporary>
   </component>
