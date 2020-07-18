@@ -696,4 +696,4 @@ def get_all_analysis():
     return json.dumps( graph_data, default=myconverter )
 
 if __name__ == "__main__":
-    app.run( debug=True )  # for deployment turn it off(False)
+    app.run(port=5000, debug=True, host='0.0.0.0')  # for deployment turn it off(False)
