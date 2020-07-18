@@ -1,5 +1,5 @@
 # from services.processes import raw_data
-file_loc = ''  # deploy
+file_loc = ''  # development
 # file_loc = '../.' # production
 
 
@@ -55,24 +55,38 @@ for i in range (1, len(raw_data)):
 clean = pd.DataFrame(clean)
 '''
 df = raw_data
-clean = {'Gender' : df['Gender'],'Age' : df['Age Bracket']}
+clean_g = {'Gender' : df['Gender'],'Age' : df['Age Bracket']}
 # df.set_index('Name', inplace=True)
 # print(clean)
+clean_g = pd.DataFrame(clean_g)
+clean_g.dropna(inplace=True)
+clean = {'Age':[], 'Gen':[] }
+
+num = []
+for i in range(0,111):
+  i = str(i)
+  num.append(i)
+
+for row in clean_g.index:
+  #print(clean_g['Age'][row])
+  if clean_g['Age'][row] in num:
+    clean['Age'].append( clean_g['Age'][row])
+    clean['Gen'].append( clean_g['Gender'][row])
+
 clean = pd.DataFrame(clean)
-clean.dropna(inplace=True)
-clean = clean[clean['Age'] != '28-35']
+clean['Gen'] = clean['Gen'].str.strip()
 clean['Age'] = clean['Age'].astype(float)
 clean['Age'] = np.floor(clean['Age'])
-clean['Gender'] = clean['Gender'].str.replace('M ','M')
+# clean['Gender'] = clean['Gender'].str.replace('M ','M')
 M = []
 F = []
 NB = []
 for row in clean.index:
-    if clean['Gender'][row] == 'M':
+    if clean['Gen'][row] == 'M':
         M.append(clean['Age'][row])
-    if clean['Gender'][row] == 'F':
+    if clean['Gen'][row] == 'F':
         F.append(clean['Age'][row])
-    if clean['Gender'][row] == 'Non-Binary':
+    if clean['Gen'][row] == 'Non-Binary':
         NB.append(clean['Age'][row])
 # print(M)
 # print(F)

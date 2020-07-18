@@ -116,6 +116,12 @@ def testing_data():
     testing_data['updatedon'] = pd.to_datetime( testing_data['updatedon'], format='%d/%m/%Y' )
     testing_data = testing_data[testing_data['totaltested'] != '14/04/2020']
     testing_data.replace( to_replace="", value="0", inplace=True )  ######VERY CRUCIAL, WITHOUT THIS CODE BREAKS, IDK WHY THOUGH {TOOK 30 MIN TO FIND}
+    testing_data.replace( to_replace=" ", value="0", inplace=True )  ## NEW Type of issue addressed here! (More efficient code will be written in a later version so that such probelms do not arise, for now hard-coding till V1.0)
+
+    testing_data['totaltested'] = testing_data['totaltested'].str.replace( ',', '' ).astype( float )
+    testing_data['positive'] = testing_data['positive'].str.replace( ',', '' ).astype( float )
+    testing_data['negative'] = testing_data['negative'].str.replace( ',', '' ).astype( float )
+    testing_data['unconfirmed'] = testing_data['unconfirmed'].str.replace( ',', '' ).astype( float )
 
     grouped_testing_data = testing_data
     grouped_testing_data = grouped_testing_data.sort_values( ['totaltested'], ascending=False )
@@ -181,21 +187,28 @@ def get_govt_data_from_kaggle():
 
 
 def manipulate_raw_data():
-    df = pd.read_csv(file_loc + './data/raw_data.csv')
+    df = pd.read_csv(file_loc + '../data/raw_data.csv')
     df = df[df['Age Bracket'] != '8 Months']
     df = df[df['Age Bracket'] != '28-35']
     df = df[df['Age Bracket'] != '6 Months']
     df = df[df['Age Bracket'] != '5 Months']
     df = df[df['Age Bracket'] != '5 months']
     df = df[df['Age Bracket'] != '9 Months']
+    df = df[df['Age Bracket'] != '8 month']
+    df = df[df['Age Bracket'] != '1 DAY']
+    df = df[df['Age Bracket'] != '9 Month']
+    df = df[df['Age Bracket'] != '18-28']
 
-    df.to_csv( file_loc + './data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
 
+    # df.to_csv( file_loc + './data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S")
+    df.to_csv('../data/raw_data.csv', index=False, date_format="%Y-%m-%d %H:%M:%S" )
 
-# get_govt_data_from_kaggle()
 #get_news()
-# raw_data_update()
-# district_wise()
-# testing_data()
 
+'''
+get_govt_data_from_kaggle()
+raw_data_update()
+district_wise()
+testing_data()
+'''
 # manipulate_raw_data()
