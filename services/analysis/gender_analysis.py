@@ -4,7 +4,7 @@ file_loc = ''  # development
 
 
 import pandas as pd
-import numpy as np
+import math
 '''
 # Development
 from services.processes import getData, Data
@@ -76,7 +76,7 @@ for row in clean_g.index:
 clean = pd.DataFrame(clean)
 clean['Gen'] = clean['Gen'].str.strip()
 clean['Age'] = clean['Age'].astype(float)
-clean['Age'] = np.floor(clean['Age'])
+clean['Age'] = clean['Age'].apply(lambda x: math.floor(x));
 # clean['Gender'] = clean['Gender'].str.replace('M ','M')
 M = []
 F = []

@@ -1,6 +1,5 @@
-
+import math
 import pandas as pd
-import numpy as np
 file_loc = ''  # development
 # file_loc = '../.' # build
 
@@ -31,7 +30,7 @@ cl = {'Age' : clean}
 cl = pd.DataFrame(cl)
 cl['Age'] = cl['Age'].astype(float)
 cl['Age'].dropna(inplace=True)
-cl['Age'] = np.floor(cl['Age'])
+cl['Age'] = cl['Age'].apply(lambda x: math.floor(x))
 
 
 age = pd.Series(cl['Age']).to_list()
