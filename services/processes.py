@@ -130,9 +130,10 @@ def testing_data():
 
 # testing_data()
 
-def get_news():
+def get_news(secret):
     #print(os.environ)
-    API_KEY = os.environ.get('NEWS_API_KEY')
+    API_KEY = secret
+    # API_KEY = os.environ.get('NEWS_API_KEY')
     # print(API_KEY)
     # from news_api import API_KEY
     # print(FLASK_ENV)
