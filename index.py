@@ -68,7 +68,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 warnings.simplefilter( 'ignore' )
 
 
-# diagnosed date string format mein aa rha hai
 '''
 def update():
 
@@ -94,8 +93,6 @@ scheduler.start()
 atexit.register( lambda: scheduler.shutdown() )
 
 '''
-# t = threading.Thread(target=update)
-# t.start()
 
 '''--------NEWS CONFIG--------'''
 #getting news for the first time
@@ -108,9 +105,7 @@ atexit.register(lambda: news_scheduler.shutdown())
 
 def myconverter(o):  # datetime to JSON converter
     if isinstance( o, datetime ):
-        # date_time = datetime.fromtimestamp(o.timestamp())  # can change to string o.__str
-        # time = date_time.strftime("%d %B %Y")
-        # return time
+        
         return o.timestamp()
 
 
@@ -122,10 +117,7 @@ def index():
 @app.route('/api/update')
 def update():
     print("Updating DB")
-    # updating database
-    #services.processes.update_database()
-    #services.processes.update_database2()
-    #services.processes. get_govt_data_from_kaggle()
+    
 
     # updating imports
     importlib.reload(services.statewise.statewise_confirmed_recovered_deaths )
@@ -590,6 +582,8 @@ def get_all_analysis():
             'labels' : services.analysis.gender_analysis.labels,
             'type' : 'pie',
             'title' : 'Gender Analysis'
+            
+            
         },
         'gender_age_correlation' : {
             'Male' : services.analysis.gender_analysis.M,
@@ -598,8 +592,10 @@ def get_all_analysis():
             'type' : "histogram"
         }
 
+        
+        
     }
     return json.dumps( graph_data, default=myconverter )
 
 if __name__ == "__main__":
-    app.run( debug=True )  # for deployment turn it off(False)
+    app.run( debug=True )  
