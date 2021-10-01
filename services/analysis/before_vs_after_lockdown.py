@@ -21,7 +21,10 @@ bef_lockdown_cases = pd.Series(bef_lockdown['tot_confirmed']).to_list()
 after_lockdown = grouped[grouped['Date'] >= '2020-03-25' ]
 after_lockdown_dates = pd.Series(after_lockdown['Date']).to_list()
 after_lockdown_cases = pd.Series(after_lockdown['tot_confirmed']).to_list()
-# print("TIme ", int(max(grouped["tot_confirmed"])))
+
+after_lockdown = grouped[grouped['Date'] >= '2020-03-25' ]
+after_lockdown_dates = pd.Series(after_lockdown['Date']).to_list()
+after_lockdown_cases = pd.Series(after_lockdown['tot_confirmed']).to_list()
 shapes = [
     {
       "type": 'line',
