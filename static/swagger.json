@@ -2,11 +2,11 @@
   "openapi": "3.0.0",
   "trailingSlash": "true",
   "info": {
-    "description": "Documentation of Backend api's for covid19 India Analytics",
+    "description": "Documentation of Backend api's for covid19 Analytics India ",
     "version": "2.0.0",
     "title": "covid19 India",
     "contact": {
-      "email": "atharvu1@gmail.com"
+      "email": "covidanalyticsindia@gmail.com"
     },
     "license": {
       "name": "Unknown",
