@@ -2,7 +2,7 @@
     "version": 2,
     "name": "covid19-analysis",
     "builds": [
-        { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "30mb" } }
+        { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "60mb" } }
     ],
     "routes": [
         { "src": "/.*", "dest": "/"}
